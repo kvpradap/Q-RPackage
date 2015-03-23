@@ -1,0 +1,16 @@
+{
+    "contents" : "\\name{QPackage-package}\n\\alias{QPackage-package}\n\\alias{QPackage}\n\\docType{package}\n\\title{\nEntity Matching package\n}\n\\description{\nEnd-to-end entity matching management system\n}\n\\details{\n\\tabular{ll}{\nPackage: \\tab QPackage\\cr\nType: \\tab Package\\cr\nVersion: \\tab 1.0\\cr\nDate: \\tab 2015-03-22\\cr\nLicense: \\tab MIT\\cr\n}\nSupports end-to-end workflow for entity matching management system\n}\n\\author{\nPradap KV\n\nMaintainer: Pradap KV <pradap@cs.wisc.edu>\n}\n\\references{\n\n}\n\\keyword{ package }\n\\seealso{\n\n\n}\n\\examples{\n\n}\n",
+    "created" : 1427044951417.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3771223895",
+    "id" : "AA6D24FC",
+    "lastKnownWriteTime" : 1427045155,
+    "path" : "/Users/Patron/GitHub/Q-RPackage/QPackage/man/QPackage-package.Rd",
+    "project_path" : "man/QPackage-package.Rd",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_doc"
+}

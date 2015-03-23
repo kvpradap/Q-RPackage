@@ -1,0 +1,16 @@
+{
+    "contents" : "#' Constructor function for QTable\n#' Extends data.frame to contain meta data such as Id attribute\nQTable <- function(..., genId=FALSE) {\n  new (\"QTable\", data.frame(...), genId=genId)\n}\n\n#' Class definition for QTable\n#' Has two attributes: idField and genId\n#' idField : column id name in the table\n#' genId : flag to denote whether Id attribute must be generated.\nsetClass(\n  \"QTable\",\n  slots = c(idField=\"character\",\n            genId = \"logical\"\n  ),\n  contains=\"data.frame\"\n)\n\n#' Generic function for CheckId\nsetGeneric(\"CheckId\", function(object, idName) standardGeneric(\"CheckId\"))\n\n#' Generic function for AddId\nsetGeneric(\"AddId\", function(object, idName) standardGeneric(\"AddId\"))\n\n\nsetMethod(\"CheckId\", representation(object=\"QTable\", idName=\"character\"), function(object, idName) {\n  \n  if(any(colnames(dat) == idName) == FALSE) {\n    stop(c(\"Input data does not have \", idName, \" column\"))\n  }\n  uniqValues <- unique(object[idName])\n  if(nrow(uniqValues) != nrow(object[idName])) {\n    return(FALSE)\n  } else {\n    return(TRUE)\n  }\n  #c(\"Inside Check Id \", idName)\n})\n\n\n#' Method definition for AddId from QTable\n#' @param object: QTable to which id attribute should be added\n#' @param idName: column name from QTable\n#' @return QTable: updated QTable\nsetMethod(\"AddId\", representation(object=\"QTable\", idName=\"character\"), function(object, idName) {\n  if(any(colnames(dat) == idName) == FALSE) {\n    stop(c(\"Input data does not have \", idName, \" column\"))\n  }\n  if(CheckId(object, idName) == TRUE) {\n    object@idField=idName\n    object@genId = FALSE\n    message(c(idName, \" column was unique and made as primary key\"))\n    return(object)\n  } else {\n    message(c(idName, \" column was not unique\"))\n    return(object)\n  }\n  \n})\n\n\nsetMethod(\"CheckId\", representation(object=\"data.frame\", idName=\"character\"), function(object, idName) {\"Not defined for data.frame\"})\n\nsetMethod(\"AddId\", representation(object=\"data.frame\", idName=\"character\"), function(object, idName) {\"Not defined for data.frame\"})",
+    "created" : 1427044751179.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "438962334",
+    "id" : "40FA20D6",
+    "lastKnownWriteTime" : 1427045807,
+    "path" : "/Users/Patron/GitHub/Q-RPackage/QPackage/R/QClasses.R",
+    "project_path" : "R/QClasses.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

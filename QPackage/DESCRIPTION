@@ -1,0 +1,9 @@
+Package: QPackage
+Type: Package
+Title: Entity Matching package
+Version: 1.0
+Date: 2015-03-22
+Author: Pradap KV
+Maintainer:Pradap KV <pradap@cs.wisc.edu>
+Description: Build an end-to-end entity matching system
+License: MIT

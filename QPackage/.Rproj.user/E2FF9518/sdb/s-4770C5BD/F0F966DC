@@ -1,0 +1,16 @@
+{
+    "contents" : "^.*\\.Rproj$\n^\\.Rproj\\.user$\n",
+    "created" : 1427044814617.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2708567950",
+    "id" : "F0F966DC",
+    "lastKnownWriteTime" : 1427044613,
+    "path" : "/Users/Patron/GitHub/Q-RPackage/QPackage/.Rbuildignore",
+    "project_path" : ".Rbuildignore",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "text"
+}

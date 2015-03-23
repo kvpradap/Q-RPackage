@@ -1,0 +1,16 @@
+{
+    "contents" : "Package: QPackage\nType: Package\nTitle: Entity Matching package\nVersion: 1.0\nDate: 2015-03-22\nAuthor: Pradap KV\nMaintainer:Pradap KV <pradap@cs.wisc.edu>\nDescription: Build an end-to-end entity matching system\nLicense: MIT\n",
+    "created" : 1427044799872.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "7912140",
+    "id" : "38020487",
+    "lastKnownWriteTime" : 1427044938,
+    "path" : "/Users/Patron/GitHub/Q-RPackage/QPackage/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "dcf"
+}
