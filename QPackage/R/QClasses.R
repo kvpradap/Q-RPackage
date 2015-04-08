@@ -41,12 +41,11 @@ setMethod("CheckId", representation(object="QTable", idCol="character"), functio
 #' @param idCol: column name from QTable
 #' @return QTable: updated QTable
 setMethod("SetId", representation(object="QTable", idCol="character"), function(object, idCol) {
-  if(any(colnames(dat) == idCol) == FALSE) {
+  if(any(colnames(object) == idCol) == FALSE) {
     stop(c("Input data does not have ", idCol, " column"))
   }
   if(CheckId(object, idCol) == TRUE) {
     object@idCol=idCol
-    object@genId = FALSE
     message(c(idCol, " column was unique and made as primary key"))
     return(object)
   } else {
