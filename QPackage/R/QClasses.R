@@ -1,7 +1,7 @@
 #' Constructor function for QTable
 #' Extends data.frame to contain meta data such as Id attribute
-QTable <- function(..., genId=FALSE) {
-  new ("QTable", data.frame(...), genId=genId)
+QTable <- function(..., idCol="") {
+  new ("QTable", data.frame(...), idCol=idCol)
 }
 
 #' Class definition for QTable
@@ -10,55 +10,53 @@ QTable <- function(..., genId=FALSE) {
 #' genId : flag to denote whether Id attribute must be generated.
 setClass(
   "QTable",
-  slots = c(idField="character",
-            genId = "logical"
+  slots = c(idCol="character"
   ),
   contains="data.frame"
 )
 
 #' Generic function for CheckId
-setGeneric("CheckId", function(object, idName) standardGeneric("CheckId"))
+setGeneric("CheckId", function(object, idCol) standardGeneric("CheckId"))
 
-#' Generic function for AddId
-setGeneric("AddId", function(object, idName) standardGeneric("AddId"))
+#' Generic function for SetId
+setGeneric("SetId", function(object, idCol) standardGeneric("SetId"))
 
-
-setMethod("CheckId", representation(object="QTable", idName="character"), function(object, idName) {
+setMethod("CheckId", representation(object="QTable", idCol="character"), function(object, idCol) {
   
-  if(any(colnames(dat) == idName) == FALSE) {
-    stop(c("Input data does not have ", idName, " column"))
+  if(any(colnames(object) == idCol) == FALSE) {
+    stop(c("Input data does not have ", idCol, " column"))
   }
-  uniqValues <- unique(object[idName])
-  if(nrow(uniqValues) != nrow(object[idName])) {
+  uniqValues <- unique(object[idCol])
+  if(nrow(uniqValues) != nrow(object[idCol])) {
     return(FALSE)
   } else {
     return(TRUE)
   }
-  #c("Inside Check Id ", idName)
+  #c("Inside Check Id ", idCol)
 })
 
 
-#' Method definition for AddId from QTable
+#' Method definition for CheckId from QTable
 #' @param object: QTable to which id attribute should be added
-#' @param idName: column name from QTable
+#' @param idCol: column name from QTable
 #' @return QTable: updated QTable
-setMethod("AddId", representation(object="QTable", idName="character"), function(object, idName) {
-  if(any(colnames(dat) == idName) == FALSE) {
-    stop(c("Input data does not have ", idName, " column"))
+setMethod("SetId", representation(object="QTable", idCol="character"), function(object, idCol) {
+  if(any(colnames(dat) == idCol) == FALSE) {
+    stop(c("Input data does not have ", idCol, " column"))
   }
-  if(CheckId(object, idName) == TRUE) {
-    object@idField=idName
+  if(CheckId(object, idCol) == TRUE) {
+    object@idCol=idCol
     object@genId = FALSE
-    message(c(idName, " column was unique and made as primary key"))
+    message(c(idCol, " column was unique and made as primary key"))
     return(object)
   } else {
-    message(c(idName, " column was not unique"))
+    message(c(idCol, " column was not unique"))
     return(object)
   }
   
 })
 
 
-setMethod("CheckId", representation(object="data.frame", idName="character"), function(object, idName) {"Not defined for data.frame"})
+setMethod("CheckId", representation(object="data.frame", idCol="character"), function(object, idCol) {"Not defined for data.frame"})
 
-setMethod("AddId", representation(object="data.frame", idName="character"), function(object, idName) {"Not defined for data.frame"})
+setMethod("SetId", representation(object="data.frame", idCol="character"), function(object, idCol) {"Not defined for data.frame"})

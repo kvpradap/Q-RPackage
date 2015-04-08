@@ -1,0 +1,17 @@
+{
+    "contents" : "#' Import csv file into QTable\n\nReadCSV <- function (..., idCol=NA) {\n  #----- load csv file into dataframe\n  df <- read.csv(...)\n  \n  #---- create qtable object\n  q <- QTable(df)\n  \n  #---- handle idCol\n  \n  #-- case 1: idCol is NA\n  if (is.na(idCol) == TRUE) {\n    return(q)\n  }\n  \n  #-- case 2: idCol is column name\n  if (is.character(idCol) == TRUE) {\n    if (CheckId(q, idCol) == TRUE) {\n      # set id attribute\n      q <- SetId(q, idCol)\n    } else {\n      # print warning\n      warning(\"IdCol contains non-unique values\")      \n    }\n    return(q)\n  }\n  \n  #-- case 3: idCol is column index\n  if (is.integer(idCol) == TRUE) {\n    \n    #-- Get column name\n    colName <- colnames(q)\n    \n    if (CheckId(q, idCol) == TRUE) {\n      # set id attribute\n      q <- SetId(q, idCol)\n    } else {\n      # print warning\n      warning(\"IdCol contains non-unique values\")      \n    }\n    return(q)\n  }\n  \n}",
+    "created" : 1428461850941.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "418956366",
+    "id" : "A374C6D6",
+    "lastKnownWriteTime" : 1428463858,
+    "path" : "~/Documents/Research/R-Packages/Q-RPackage/QPackage/R/import_data.R",
+    "project_path" : "R/import_data.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

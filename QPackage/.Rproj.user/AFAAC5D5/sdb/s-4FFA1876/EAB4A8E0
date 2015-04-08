@@ -1,0 +1,16 @@
+{
+    "contents" : "#' Constructor function for QTable\n#' Extends data.frame to contain meta data such as Id attribute\nQTable <- function(..., idCol=\"\") {\n  new (\"QTable\", data.frame(...), idCol=idCol)\n}\n\n#' Class definition for QTable\n#' Has two attributes: idField and genId\n#' idField : column id name in the table\n#' genId : flag to denote whether Id attribute must be generated.\nsetClass(\n  \"QTable\",\n  slots = c(idCol=\"character\"\n  ),\n  contains=\"data.frame\"\n)\n\n#' Generic function for CheckId\nsetGeneric(\"CheckId\", function(object, idCol) standardGeneric(\"CheckId\"))\n\n#' Generic function for SetId\nsetGeneric(\"SetId\", function(object, idCol) standardGeneric(\"SetId\"))\n\nsetMethod(\"CheckId\", representation(object=\"QTable\", idCol=\"character\"), function(object, idCol) {\n  \n  if(any(colnames(object) == idCol) == FALSE) {\n    stop(c(\"Input data does not have \", idCol, \" column\"))\n  }\n  uniqValues <- unique(object[idCol])\n  if(nrow(uniqValues) != nrow(object[idCol])) {\n    return(FALSE)\n  } else {\n    return(TRUE)\n  }\n  #c(\"Inside Check Id \", idCol)\n})\n\n\n#' Method definition for CheckId from QTable\n#' @param object: QTable to which id attribute should be added\n#' @param idCol: column name from QTable\n#' @return QTable: updated QTable\nsetMethod(\"SetId\", representation(object=\"QTable\", idCol=\"character\"), function(object, idCol) {\n  if(any(colnames(dat) == idCol) == FALSE) {\n    stop(c(\"Input data does not have \", idCol, \" column\"))\n  }\n  if(CheckId(object, idCol) == TRUE) {\n    object@idCol=idCol\n    object@genId = FALSE\n    message(c(idCol, \" column was unique and made as primary key\"))\n    return(object)\n  } else {\n    message(c(idCol, \" column was not unique\"))\n    return(object)\n  }\n  \n})\n\n\nsetMethod(\"CheckId\", representation(object=\"data.frame\", idCol=\"character\"), function(object, idCol) {\"Not defined for data.frame\"})\n\nsetMethod(\"SetId\", representation(object=\"data.frame\", idCol=\"character\"), function(object, idCol) {\"Not defined for data.frame\"})",
+    "created" : 1428461225900.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3578658559",
+    "id" : "EAB4A8E0",
+    "lastKnownWriteTime" : 1428463858,
+    "path" : "~/Documents/Research/R-Packages/Q-RPackage/QPackage/R/QClasses.R",
+    "project_path" : "R/QClasses.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
