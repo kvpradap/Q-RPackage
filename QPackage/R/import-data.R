@@ -1,11 +1,17 @@
 #' Import csv file into QTable
 
-ReadCSV <- function (..., idCol=NA) {
+read_csv_basic <- function (...) {
   #----- load csv file into dataframe
-  df <- read.csv(...)
-  
+  df <- read.csv(..., stringsAsFactors=F)
   #---- create qtable object
   q <- QTable(df)
+  
+  return(q)  
+  
+}
+ReadCsv <- function (..., idCol = NA) {
+  
+  q <- read_csv_basic(...)
   
   #---- handle idCol
   
