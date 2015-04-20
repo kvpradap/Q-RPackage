@@ -1,36 +1,6 @@
 {
     "debugBreakpointsState" : {
         "breakpoints" : [
-            {
-                "editor_line_number" : 13,
-                "editor_state" : 1,
-                "function_name" : "fn1",
-                "function_steps" : "3,3,3,3,3,4,3,2",
-                "id" : 3,
-                "is_package_breakpoint" : true,
-                "is_pending_debug_completion" : false,
-                "line_number" : 13,
-                "needs_updated_steps" : false,
-                "package_name" : "QPackage",
-                "path" : "~/Documents/Research/R-Packages/Q-RPackage/QPackage/R/gg.R",
-                "state" : 1,
-                "type" : 0
-            },
-            {
-                "editor_line_number" : 11,
-                "editor_state" : 1,
-                "function_name" : "fn1",
-                "function_steps" : "3,3,3,2",
-                "id" : 4,
-                "is_package_breakpoint" : true,
-                "is_pending_debug_completion" : false,
-                "line_number" : 11,
-                "needs_updated_steps" : false,
-                "package_name" : "QPackage",
-                "path" : "~/Documents/Research/R-Packages/Q-RPackage/QPackage/R/gg.R",
-                "state" : 1,
-                "type" : 0
-            }
         ]
     }
 }

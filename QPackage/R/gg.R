@@ -26,11 +26,6 @@ fn1 <- function(indx) {
     df <- rbind(df, kk[[i]])
   }
   
-  
-  
-  
-  
-  
   options(stringsAsFactors=str_opt)
   
   df
