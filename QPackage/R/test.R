@@ -1,5 +1,5 @@
 # -- import data
-<<<<<<< HEAD
+#<<<<<<< HEAD
 # d <- ReadCsv('../QPackage/data/DBLP_cleaned.csv', idCol="id")
 # 
 # d_sample = QTable(d[1:10, ])
@@ -13,22 +13,26 @@
 # # qtable <- function(df) {
 # #   structure(list(df, key=c()), class=c("foo", "data.frame"))
 # # }
-# temp <- 5
-# ref <- function (temporari) 
-# {
-#   subx <- substitute(temporari)
-#   if (is.name(subx)) 
-#     subx <- deparse(subx)
-#   if (!is.character(subx)) 
-#     stop("'function' requires a name")
-#   parent <- parent.frame()
-#   if (exists(subx, envir = parent, inherits = TRUE)) 
-#     x <- 10
-#   else {
-#     stop('variable not defined')
-#   }
-#   assign(subx, x, envir = .GlobalEnv)
-# }
+temp <- 5
+ref <- function (temporari) 
+{
+  subx <- substitute(temporari)
+  if (is.name(subx)) 
+    subx <- deparse(subx)
+  if (!is.character(subx)) 
+    stop("'function' requires a name")
+  parent <- parent.frame()
+  if (exists(subx, envir = parent, inherits = TRUE)) 
+    x <- 10
+  else {
+    #stop('variable not defined')
+    x <- 35
+    environment(x) <- parent
+  
+  
+  }
+  assign(subx, x, envir = parent)
+}
 # =======
 # d <- ReadCsv('../QPackage/data/DBLP_cleaned.csv', idCol="id")
 # 
@@ -42,6 +46,7 @@
 
 #cand_set <- get_pairs(inv_index)
 #df <- block_attr_equivalence(d_sample, "year")
+
 
 
 

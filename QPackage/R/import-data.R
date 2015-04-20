@@ -9,6 +9,114 @@ read_csv_basic <- function (...) {
   return(q)  
   
 }
+
+
+
+read_csv <- function(..., key = list()) {
+  # load csv file into data frame
+  df <- read.csv(..., stringsAsFactors = FALSE)
+  # create qtable object
+  q <- qtable(df)
+  
+  # handle key column 
+  
+  # -- case 1 : key column is empty list
+  if (length(key) == 0) {      
+    return(q)
+  }
+  
+  # -- case 2 : key column has list of column names
+  if (check_id(q, key) == TRUE) {
+    set_id(q, key)
+  } else {
+  }
+  return(q)
+}
+
+
+
+
+
+
+
+
+
+
+read_csv_stat <- function(..., key = list(), status) {
+  
+  # load csv file into data frame
+  df <- read.csv(..., stringsAsFactors = FALSE)
+  # create qtable object
+  q <- qtable(df)
+  
+  
+  #-----------------------
+  
+  subx <- substitute(status)
+  if (is.name(subx)) 
+    subx <- deparse(subx)
+  if (!is.character(subx)) 
+    stop("'function' requires a name")
+  parent <- parent.frame()
+  #assign(subx, x, envir = parent)
+  
+  #----------------------
+  
+  
+  
+  # handle key column 
+  
+  # -- case 1 : key column is empty list
+  if (length(key) == 0) {
+    if (exists(subx, envir = parent, inherits = TRUE)) 
+      status <- 10
+    else {
+      stop('variable not defined')
+      #status <- 35
+      #environment(status) <- parent
+    }
+    
+    #assign(sub_obj, object, envir = .GlobalEnv)
+    assign(sub_x, status, envir = parent)
+    
+    return(q)
+  }
+  
+  # -- case 2 : key column has list of column names
+  if (check_id(q, key) == TRUE) {
+    if (exists(subx, envir = parent, inherits = TRUE)) 
+      status <- 10
+    else {
+      stop('variable not defined')
+      #status <- 35
+      #environment(status) <- parent
+      
+      
+    }
+    
+    
+    set_id(q, key)
+  } else {
+    # -------- set the status 
+    if (exists(subx, envir = parent, inherits = TRUE)) 
+      status <- 10
+    else {
+      stop('variable not defined')
+      #status <- 35
+      #environment(x) <- parent
+      
+      
+    }
+    #assign(sub_obj, object, envir = .GlobalEnv)
+    
+    
+  }
+  assign(subx, status, envir = parent)
+  return(q)
+  
+  
+  
+}
 ReadCsv <- function (..., idCol = NA) {
   
   q <- read_csv_basic(...)

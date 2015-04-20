@@ -1,28 +1,30 @@
-qtable <- function(..., key=list()) {
-  new ("qtable", data.frame(...), key=list())
+qtable <- function(...) {
+  new ("qtable", data.frame(...))
 }
 
 setClass(
   "qtable", slots=c(key="list"),
+  prototype = list(key = NULL),
   contains = "data.frame"
 )
 
 setGeneric("check_id", function(object, key) standardGeneric("check_id"))
 
-setGeneric("set_id", function(object, key, status) standardGeneric("set_id"))
+setGeneric("set_id", function(object, key) standardGeneric("set_id"))
 
 setMethod("check_id", representation(object="qtable", key="list"), function(object, key) {
   
   key <- unlist(key)
   # check if the input vector is of character type
   if(is.character(key) == FALSE) {
-    error('key can be only a character vector')
-    return(false)
+    message('key can be only a character vector')
+    return(FALSE)
   }
   
   # check if the key attr names are present in qtable
   if(all(key %in% colnames(object)) == FALSE) {
-    error(c('key [', key,  ']does not form a subset of qtable column names [ ', colnames(object)), ' ]')
+    message(c('key [', key,  ']does not form a subset of qtable column names [ ', colnames(object)), ' ]')
+    return(FALSE)
   }
   
   # check unique values in key
@@ -34,35 +36,28 @@ setMethod("check_id", representation(object="qtable", key="list"), function(obje
   }
 })
 
-setMethod("set_id", representation(object="qtable",  key="list", status="numeric"), function(object, key, status) {
+setMethod("set_id", representation(object="qtable",  key="list"), function(object, key) {
   
   key <- unlist(key)
+  
+  if(length(key) == 0) {
+    message('key is empty')
+    return(FALSE)
+  }
+  
   # check if the input vector is of character type
   if(is.character(key) == FALSE) {
-    #updating parent env
-    # -----------------------------
-    
-    
-    
-    # -----------------------------
-    
-    error('key can be only a character vector')
-
+    message('key can be only a character vector')
+    return(FALSE)
   }
   
   # check if the key attr names are present in qtable
   if(all(key %in% colnames(object)) == FALSE) {
-
-    #updating parent env
-    status <<- 1
-
-    error(c('key [', key,  ']does not form a subset of qtable column names [ ', colnames(object)), ' ]')
+    message(c('key [', key,  ']does not form a subset of qtable column names [ ', colnames(object)), ' ]')
+    return(FALSE)
   }
 
-  if(check_id(object, list(key)) == TRUE) {
-    #object@key <<- list(key)
-    # -----------------------------
-    
+  if(check_id(object, list(key)) == TRUE) {    
     sub_obj <- substitute(object)
     if (is.name(sub_obj)) 
       sub_obj <- deparse(sub_obj)
@@ -72,48 +67,13 @@ setMethod("set_id", representation(object="qtable",  key="list", status="numeric
     else {
       stop('variable not defined')
     }
-    assign(sub_obj, object, envir = .GlobalEnv)
-    
-    
-    # updating status
-    # -----------------------------
-    print("after setting obj")
-    sub_status <- substitute(status)
-    if (is.name(sub_status)) {
-      sub_status <- deparse(sub_status)
-    }
-    parent <- parent.frame()
-    if (exists(sub_status, envir = parent, inherits = TRUE)) 
-      status <- 0
-    else {
-      
-      status <- 0
-      environment(status) <- .GlobalEnv
-    }
-    assign(sub_status, status, envir = .GlobalEnv)
-    
-    # --------------------------- 
-    
-    #return(object)
+    #assign(sub_obj, object, envir = .GlobalEnv)
+    assign(sub_obj, object, envir = parent)
+    return(TRUE)
   } else {
     message(c(key, " column was not unique"))
+    return(FALSE)
     
-    #updating parent env
-    # -----------------------------
-    sub_status <- substitute(status)
-    if (is.name(sub_status)) {
-      sub_status <- deparse(sub_status)
-    }
-    parent <- parent.frame()
-    if (exists(sub_status, envir = parent, inherits = TRUE)) 
-      status <- 0
-    else {
-      status <- 0
-      environment(status) <- .GlobalEnv
-    }
-    assign(sub_status, status, envir = .GlobalEnv)
-    # ---------------------------------------------
-    #return(object)
   }
   
 })
