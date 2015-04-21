@@ -1,4 +1,5 @@
 apply_block <- function(table_a, table_b, func_obj, ..., col_names_a = "NULL", col_names_b = "NULL") {
+  
   res_vec = c()
   
   for(i in 1:nrow(table_a)) {
