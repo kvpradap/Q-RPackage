@@ -1,16 +1,20 @@
 qtable <- function(...) {
-  new ("qtable", data.frame(...))
+  q <- new ("qtable", data.frame(...))
+  # attr(q, "key") <- NULL
 }
 
+setClassUnion("list.or.NULL", c("list", "NULL"))
+
 setClass(
-  "qtable", slots=c(key="list"),
-  prototype = list(key = NULL),
+  "qtable", slots=c(key="list.or.NULL"),
   contains = "data.frame"
 )
 
 setGeneric("check_id", function(object, key) standardGeneric("check_id"))
 
 setGeneric("set_id", function(object, key) standardGeneric("set_id"))
+
+
 
 setMethod("check_id", representation(object="qtable", key="list"), function(object, key) {
   

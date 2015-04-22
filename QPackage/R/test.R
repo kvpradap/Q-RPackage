@@ -13,26 +13,26 @@
 # # qtable <- function(df) {
 # #   structure(list(df, key=c()), class=c("foo", "data.frame"))
 # # }
-temp <- 5
-ref <- function (temporari) 
-{
-  subx <- substitute(temporari)
-  if (is.name(subx)) 
-    subx <- deparse(subx)
-  if (!is.character(subx)) 
-    stop("'function' requires a name")
-  parent <- parent.frame()
-  if (exists(subx, envir = parent, inherits = TRUE)) 
-    x <- 10
-  else {
-    #stop('variable not defined')
-    x <- 35
-    environment(x) <- parent
-  
-  
-  }
-  assign(subx, x, envir = parent)
-}
+# temp <- 5
+# ref <- function (temporari) 
+# {
+#   subx <- substitute(temporari)
+#   if (is.name(subx)) 
+#     subx <- deparse(subx)
+#   if (!is.character(subx)) 
+#     stop("'function' requires a name")
+#   parent <- parent.frame()
+#   if (exists(subx, envir = parent, inherits = TRUE)) 
+#     x <- 10
+#   else {
+#     #stop('variable not defined')
+#     x <- 35
+#     environment(x) <- parent
+#   
+#   
+#   }
+#   assign(subx, x, envir = parent)
+# }
 # =======
 # d <- ReadCsv('../QPackage/data/DBLP_cleaned.csv', idCol="id")
 # 
@@ -49,6 +49,20 @@ ref <- function (temporari)
 
 
 
+fn <- function(n, p,  block_attr1, block_attr2) {
+  if(n %in% block_attr2 == TRUE) {
+    i <- grep(n, block_attr2)
+    n <- block_attr1[i]
+    return(n)
+  }
+  
+  if(n %in% block_attr1) {
+    return(n)
+  }
+  
+  return(paste(n,p, sep=""))
+  
+}
 
 
 
