@@ -22,21 +22,21 @@ setMethod("check_id", representation(object="qtable", key="list"), function(obje
   # check if the input vector is of character type
   if(is.character(key) == FALSE) {
     message('key can be only a character vector')
-    return(FALSE)
+    return(1)
   }
   
   # check if the key attr names are present in qtable
   if(all(key %in% colnames(object)) == FALSE) {
     message(c('key [', key,  ']does not form a subset of qtable column names [ ', colnames(object)), ' ]')
-    return(FALSE)
+    return(1)
   }
   
   # check unique values in key
   uniq_vals <- unique(object[key])
   if( nrow(uniq_vals) != nrow(object) ) {
-    return(FALSE)
+    return(1)
   } else {
-    return(TRUE)
+    return(0)
   }
 })
 
@@ -46,22 +46,23 @@ setMethod("set_id", representation(object="qtable",  key="list"), function(objec
   
   if(length(key) == 0) {
     message('key is empty')
-    return(FALSE)
+    return(1)
   }
   
   # check if the input vector is of character type
   if(is.character(key) == FALSE) {
     message('key can be only a character vector')
-    return(FALSE)
+    return(1)
   }
   
   # check if the key attr names are present in qtable
   if(all(key %in% colnames(object)) == FALSE) {
     message(c('key [', key,  ']does not form a subset of qtable column names [ ', colnames(object)), ' ]')
-    return(FALSE)
+    return(1)
   }
 
-  if(check_id(object, list(key)) == TRUE) {    
+  # check id returns 0 if the id column was unique
+  if(check_id(object, list(key)) == 0) {    
     sub_obj <- substitute(object)
     if (is.name(sub_obj)) 
       sub_obj <- deparse(sub_obj)
@@ -73,10 +74,10 @@ setMethod("set_id", representation(object="qtable",  key="list"), function(objec
     }
     #assign(sub_obj, object, envir = .GlobalEnv)
     assign(sub_obj, object, envir = parent)
-    return(TRUE)
+    return(0)
   } else {
     message(c(key, " column was not unique"))
-    return(FALSE)
+    return(1)
     
   }
   

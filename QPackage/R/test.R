@@ -49,20 +49,33 @@
 
 
 
-fn <- function(n, p,  block_attr1, block_attr2) {
-  if(n %in% block_attr2 == TRUE) {
-    i <- grep(n, block_attr2)
-    n <- block_attr1[i]
-    return(n)
-  }
-  
-  if(n %in% block_attr1) {
-    return(n)
-  }
-  
-  return(paste(n,p, sep=""))
-  
+# fn <- function(n, p,  block_attr1, block_attr2) {
+#   if(n %in% block_attr2 == TRUE) {
+#     i <- grep(n, block_attr2)
+#     n <- block_attr1[i]
+#     return(n)
+#   }
+#   
+#   if(n %in% block_attr1) {
+#     return(n)
+#   }
+#   
+#   return(paste(n,p, sep=""))
+#   
+# }
+
+
+
+if(0) {
+library(rJava)
+  .jinit()
+  .jaddClassPath("/scratch/pradap/r-work/simfunction.jar")
+  .jaddClassPath("/scratch/pradap/local/share/javalibs/simmetrics_jar_v1_6_2_d07_02_07.jar")
+  obj <- .jnew("build/SimilarityFunction")
+  res_tokens <- .jrcall(obj, "whitespaceTokenizer", "m uru gas ara")
+  print(res_tokens)
+  res_single_string <- .jrcall(obj, "getSimilarity", "mur", "muru")
+  print(res_single_string)
+  res <- .jrcall(obj, "getSimilarity", res_tokens, res_tokens)
 }
-
-
 
