@@ -2,13 +2,13 @@ jaccard <- function(s1, s2) {
   
   # if one them is NA return NA
   if(length(s1) > 0) {
-    if(is.na(s1)) {
+    if(any(is.na(s1))) {
       return(NA)
     }
   }
 
   if(length(s2) > 0) {
-    if(is.na(s2)) {
+    if(any(is.na(s2))) {
       return(NA)
     }
   }
@@ -37,13 +37,13 @@ jaccard <- function(s1, s2) {
 lev <- function(s1, s2) {
   
   if(length(s1) > 0) {
-    if(is.na(s1)) {
+    if(any(is.na(s1))) {
       return(NA)
     }
   }
   
   if(length(s2) > 0) {
-    if(is.na(s2)) {
+    if(any(is.na(s2))) {
       return(NA)
     }
   }
@@ -72,13 +72,13 @@ lev <- function(s1, s2) {
 ndiff_vals <- function(d1, d2) {
   
   if(length(d1) > 0) {
-    if(is.na(s1)) {
+    if(is.na(d1)) {
       return(NA)
     }
   }
   
   if(length(d2) > 0) {
-    if(is.na(s2)) {
+    if(is.na(d2)) {
       return(NA)
     }
   }
@@ -91,6 +91,20 @@ ndiff_vals <- function(d1, d2) {
 }
 
 diff_vals <- function(d1, d2) {
+  if(length(d1) > 0) {
+    if(is.na(d1)) {
+      return(NA)
+    }
+  }
+  
+  if(length(d2) > 0) {
+    if(is.na(d2)) {
+      return(NA)
+    }
+  }
+  if(is.null(d1) | is.null(d2)) {
+    return(0)
+  }
   return(abs(d1 - d2))
 }
 

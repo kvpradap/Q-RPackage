@@ -93,3 +93,75 @@ if(0) {
   eval(parse(text = "fn <- function(a, b) { return (a * b) } "))
   
 }
+
+if(0) {
+  t1  <- tuple("brand" = "Draper", "title" = "Draper Infrared Remote Transmitter", "price" = 58.45)
+  t2  <- tuple("brand" = "Drapr", "title" = "Draper Infrared Remote Tx", "price" = 68.45)
+  fn_list <- auto_feat_gen()
+  apply_fn <- function(fn, t1, t2) {
+    #print(t1)
+    return(fn(t1, t2))
+  }
+  lapply(fn_list, apply_fn, t1, t2)
+}
+
+
+  apply_fn <- function(fn, t1, t2) {
+    #print(t1)
+    return(fn(t1, t2))
+  }
+  
+  myfun <- function(t, col_types) {
+    print(t)
+    # need two steps to get a data.frame format
+    t <- as.list(t)
+    t <- as.data.frame(t, stringsAsFactors = FALSE)
+
+    t <- convert_magic2(t, col_types)
+    
+    return(t)
+  }
+
+  fn_1 <- function(table_a, table_b, fn_list) {
+    merged_d <- cbind(table_a, table_b)
+    col_names_a <- colnames(table_a)
+    col_names_b <- colnames(table_b)
+    
+    # apply sends each row character vector to FUN. We need to preserve the types of the columns
+    # so we send the coltypes to FUN
+    col_types <- as.vector(sapply(merged_d, class))
+    ret <- apply(merged_d, 1, fn_2, col_types, col_names_a, col_names_b, fn_list)
+    return(ret)
+  }
+
+  
+  convert_types <- function(df,classes){
+    out <- lapply(1:length(classes),
+                  FUN = function(classIndex){as(df[,classIndex],classes[classIndex])})
+    names(out) <- colnames(df)
+    return(data.frame(out, stringsAsFactors = FALSE))
+  }
+
+
+  fn_2 <- function(merged_tuple, col_types, col_names_a, col_names_b, fn_list) {
+    # convert input tuple s.t the column types are preserved
+
+    merged_tuple <- as.list(merged_tuple)
+    merged_tuple <- as.data.frame(merged_tuple, stringsAsFactors = FALSE)
+    
+    merged_tuple <- convert_types(merged_tuple, col_types)
+    
+    
+    l1 <- length(col_names_a)
+    l2 <- length(col_names_b)
+    
+    t1 <- merged_tuple[, 1:l1]
+    t2 <- merged_tuple[, (1:l2) + l1]
+  
+    
+    ret_list <- lapply(fn_list, apply_fn, t1, t2)
+    return(ret_list)
+                
+    
+  }    
+
