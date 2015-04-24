@@ -1,13 +1,23 @@
 jaccard <- function(s1, s2) {
   
+  # if one them is NA return NA
+  if(length(s1) > 0) {
+    if(is.na(s1)) {
+      return(NA)
+    }
+  }
+
+  if(length(s2) > 0) {
+    if(is.na(s2)) {
+      return(NA)
+    }
+  }
   
+  # if one of them is null return 0
   if(is.null(s1) | is.null(s2)) {
     return(0) 
   }
 
-  if(any(is.na(s1)) | any(is.na(s2))) {
-    return(NA)
-  }
   
   if(is.list(s1)) {
     s1 <- unlist(s1)
@@ -25,11 +35,21 @@ jaccard <- function(s1, s2) {
 }
 
 lev <- function(s1, s2) {
+  
+  if(length(s1) > 0) {
+    if(is.na(s1)) {
+      return(NA)
+    }
+  }
+  
+  if(length(s2) > 0) {
+    if(is.na(s2)) {
+      return(NA)
+    }
+  }
+  
   if(is.null(s1) | is.null(s2)) {
     return(0) 
-  }
-  if(is.na(s1) | is.na(s2)) {
-    return(NA)
   }
   
   if(!is.character(s1)) {
@@ -50,6 +70,23 @@ lev <- function(s1, s2) {
 
 # numeric similarities
 ndiff_vals <- function(d1, d2) {
+  
+  if(length(d1) > 0) {
+    if(is.na(s1)) {
+      return(NA)
+    }
+  }
+  
+  if(length(d2) > 0) {
+    if(is.na(s2)) {
+      return(NA)
+    }
+  }
+  if(is.null(d1) | is.null(d2)) {
+    return(0)
+  }
+  
+  
   return(abs( (d1-d2)/max(d1, d2)))
 }
 

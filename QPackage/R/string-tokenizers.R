@@ -2,6 +2,9 @@
 tok_whitespace <- function(s) {
   # expect it to be a simple string
   # basic checks !!!
+  if(is.null(s)) {
+    return(NULL)
+  }
   if(is.na(s))
     return(NA)
 
@@ -13,9 +16,10 @@ tok_whitespace <- function(s) {
     message("Tokenizer takes in a simple string not a list")
     return(NULL)
   }
-  if(nchar(s) == 0) {
-    return(NULL)
-  }
+  # leave it to java tokenizer to handle it
+#   if(nchar(s) == 0) {
+#     return(NULL)
+#   }
   
   
   # call java code !!!
@@ -28,6 +32,11 @@ tok_whitespace <- function(s) {
 
 tok_qgram <- function(s, q) {
   # basic checks !!!
+  
+  if(is.null(s)) {
+    return(NULL)
+  }
+  
   if(is.na(s))
     return(NA)
   
@@ -38,9 +47,6 @@ tok_qgram <- function(s, q) {
   }
   if(is.list(s)) {
     message("Tokenizer takes in a simple string not a list")
-    return(NULL)
-  }
-  if(nchar(s) == 0) {
     return(NULL)
   }
   
