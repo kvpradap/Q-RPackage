@@ -5,7 +5,7 @@ jaccard <- function(s1, s2) {
     return(0) 
   }
 
-  if(is.na(s1) | is.na(s2)) {
+  if(any(is.na(s1)) | any(is.na(s2))) {
     return(NA)
   }
   

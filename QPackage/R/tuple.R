@@ -25,5 +25,5 @@ tuple <- function(...) {
  #new ("tuple", list(...))
 }
 
-#setClass("tuple", contains = "list")
+setClass("tuple", contains = "list")
 
