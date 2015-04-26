@@ -18,10 +18,10 @@ arrange_col_names <- function(n, p,  block_attr1, block_attr2 = NULL) {
 
 attr_equiv_block <- function(table_a, table_b, block_attr1, block_attr2, col_list_a = NULL, col_list_b = NULL) {
   
-  if(is.qtable(table_a) == FALSE) {
+  if(is_qtable(table_a) == FALSE) {
     stop("Input table A should be of qtable type")
   }
-  if(is.qtable(table_b) == FALSE) {
+  if(is_qtable(table_b) == FALSE) {
     stop("Input table A should be of qtable type")
   }
   tbl_a_ids <- unlist(table_a@key)

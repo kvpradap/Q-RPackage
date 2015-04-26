@@ -226,7 +226,7 @@ if(0) {
   cset_a_small <- cset_a[1:5, ]
   cset_b_small <- cset_b[1:5, ]
   fn_list <- create_features()
-  apply_feat_fn_over_2tables(cset_a_small, cset_b_small, fn_list)
+  feat_vec <- apply_feat_fn_over_2tables(cset_a_small, cset_b_small, fn_list)
   
   
   

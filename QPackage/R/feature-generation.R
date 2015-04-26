@@ -53,14 +53,80 @@ fill_fn_template <- function(attr1, attr2, simfunction, tok1 = NULL, tok1param =
   return(fn)
 }
 
-# function to convert types of columns
-convert_types <- function(df,classes){
-  out <- lapply(1:length(classes),
-                FUN = function(classIndex){as(df[,classIndex],classes[classIndex])})
-  names(out) <- colnames(df)
-  return(data.frame(out, stringsAsFactors = FALSE))
-}
 
+
+
+
+
+
+
+# Using input tables, pply list of feature functions over either 
+# (i) labeled data that has label as the last column
+# (ii) candidate set
+
+apply_feat_fn <- function(table_a, table_b, cand_set, fn_list) {
+  
+  # basic checks
+  if(!is_qtable(table_a)) {
+    stop('Table A is not a qtable')
+  }
+  if(!is_qtable(table_b)) {
+    stop('Table B is not a qtable')
+  }
+  if(!is_qtable(cand_set)) {
+    stop('candidate set (labeled/unlabeled) is not a qtable')
+  }
+
+  # get candidate set key 
+  keys <- unlist(cand_set@key)
+  if(length(keys) < 2) {
+    stop('candidate set (labeled/unlabeled) is expected to have composite key of size atleast 2 ')
+  }
+  lbl_flag <- is_labeled_table(cand_set)
+  
+  
+  
+  if(lbl_flag) {
+    # grab the label column
+    lbl_col <- cand_set[, "label"]
+    num_cols <- length(colnames(cand_set))
+    
+    # remove the label col from labeled set
+    cand_set <- cand_set[, seq(1, num_cols-1)]
+    
+  }
+  
+  
+  tbl_a_idx <- grep("A.", keys)
+  
+  if(!is_integer0(tbl_a_idx)) {
+    tbl_a_key <- keys[tbl_a_idx]
+    # Order in which I do the merge is important, because merge is going to retain column ids from first table for 
+    # the attributes used for attribute equivalence
+    # 
+    cset_a <- merge.with.order(table_a, cand_set, by.x = unlist(table_a@key), by.y = tbl_a_key, keep_order = 2)
+
+  }
+  tbl_b_idx <- grep("B.", keys)
+  
+  if(!is_integer0(tbl_b_idx)) {
+    tbl_b_key <- keys[tbl_b_idx]
+    cset_b <- merge.with.order(table_b, cand_set, by.x = unlist(table_b@key), by.y = tbl_b_key, keep_order = 2)
+  }
+  
+  feat_vec <- apply_feat_fn_over_2tables(cset_a, cset_b, fn_list)
+  
+  feat_vec <- cbind(cand_set[, keys], feat_vec)
+  if(lbl_flag) {
+    feat_vec <- cbind(feat_vec, lbl_col)
+  }
+  feat_vec <- qtable(feat_vec)
+  set_id(feat_vec, list(keys))
+  return(feat_vec)
+  
+  
+  
+}
 
 apply_feat_fn_over_2tables <- function(table_a, table_b, fn_list) {
   

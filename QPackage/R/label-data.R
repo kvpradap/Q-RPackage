@@ -1,5 +1,5 @@
 label_data <- function(sampled_data) {
-  if(!is.qtable(sampled_data)) {
+  if(!is_qtable(sampled_data)) {
     stop("label data is implemented for qtable")
   }
   

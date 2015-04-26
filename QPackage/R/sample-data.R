@@ -1,5 +1,5 @@
 sample_qtable <- function(table_obj, num_samples, replace = FALSE) {
-  if(!is.qtable(table_obj)) {
+  if(!is_qtable(table_obj)) {
     stop("sample_qtable is implemented for qtable")
   }
   key <- table_obj@key
