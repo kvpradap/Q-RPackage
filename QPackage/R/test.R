@@ -171,22 +171,99 @@ if(0) {
     is.integer(x) && length(x) == 0L
   }
   
+  
+  merge.with.order <- function(x,y, ..., sort = T, keep_order = 1)
+  {
+    # took it from : http://www.r-statistics.com/2012/01/merging-two-data-frame-objects-while-preserving-the-rows-order/
+    
+    
+    # this function works just like merge, only that it adds the option to return the merged data.frame ordered by x (1) or by y (2)
+    add.id.column.to.data <- function(DATA)
+    {
+      data.frame(DATA, id... = seq_len(nrow(DATA)))
+    }
+    # add.id.column.to.data(data.frame(x = rnorm(5), x2 = rnorm(5)))
+    order.by.id...and.remove.it <- function(DATA)
+    {
+      # gets in a data.frame with the "id..." column.  Orders by it and returns it
+      if(!any(colnames(DATA)=="id...")) stop("The function order.by.id...and.remove.it only works with data.frame objects which includes the 'id...' order column")
+      
+      ss_r <- order(DATA$id...)
+      ss_c <- colnames(DATA) != "id..."
+      DATA[ss_r, ss_c]
+    }
+    
+    # tmp <- function(x) x==1; 1  # why we must check what to do if it is missing or not...
+    # tmp()
+    
+    if(!missing(keep_order))
+    {
+      if(keep_order == 1) return(order.by.id...and.remove.it(merge(x=add.id.column.to.data(x),y=y,..., sort = FALSE)))
+      if(keep_order == 2) return(order.by.id...and.remove.it(merge(x=x,y=add.id.column.to.data(y),..., sort = FALSE)))
+      # if you didn't get "return" by now - issue a warning.
+      warning("The function merge.with.order only accepts NULL/1/2 values for the keep_order variable")
+    } else {return(merge(x=x,y=y,..., sort = sort))}
+  }
+  
   keys <- unlist(cand_set@key)
   tbl_a_idx <- grep("A.", keys)
   
   if(!is.integer0(tbl_a_idx)) {
     tbl_a_key <- keys[tbl_a_idx]
-    cset_a <- merge(walmart, cand_set, by.x = unlist(walmart@key), by.y = tbl_a_key)
+    #cset_a <- merge(walmart, cand_set, by.x = unlist(walmart@key), by.y = tbl_a_key)
+    cset_a <- merge.with.order(walmart, cand_set, by.x = unlist(walmart@key), by.y = tbl_a_key, keep_order = 2)
+  
+  
+  
   }
   tbl_b_idx <- grep("B.", keys)
   
   if(!is.integer0(tbl_b_idx)) {
     tbl_b_key <- keys[tbl_b_idx]
-    cset_b <- merge(bowker, cand_set, by.x = unlist(walmart@key), by.y = tbl_b_key)
+    #cset_b <- merge(bowker, cand_set, by.x = unlist(walmart@key), by.y = tbl_b_key)
+    cset_b <- merge.with.order(bowker, cand_set, by.x = unlist(bowker@key), by.y = tbl_b_key, keep_order = 2)
   }
   cset_a_small <- cset_a[1:5, ]
   cset_b_small <- cset_b[1:5, ]
   fn_list <- create_features()
   apply_feat_fn_over_2tables(cset_a_small, cset_b_small, fn_list)
+  
+  
+  
+  #-----------
+  merge.with.order <- function(x,y, ..., sort = T, keep_order = 1)
+  {
+    # took it from : http://www.r-statistics.com/2012/01/merging-two-data-frame-objects-while-preserving-the-rows-order/
+    
+    
+    # this function works just like merge, only that it adds the option to return the merged data.frame ordered by x (1) or by y (2)
+    add.id.column.to.data <- function(DATA)
+    {
+      data.frame(DATA, id... = seq_len(nrow(DATA)))
+    }
+    # add.id.column.to.data(data.frame(x = rnorm(5), x2 = rnorm(5)))
+    order.by.id...and.remove.it <- function(DATA)
+    {
+      # gets in a data.frame with the "id..." column.  Orders by it and returns it
+      if(!any(colnames(DATA)=="id...")) stop("The function order.by.id...and.remove.it only works with data.frame objects which includes the 'id...' order column")
+      
+      ss_r <- order(DATA$id...)
+      ss_c <- colnames(DATA) != "id..."
+      DATA[ss_r, ss_c]
+    }
+    
+    # tmp <- function(x) x==1; 1	# why we must check what to do if it is missing or not...
+    # tmp()
+    
+    if(!missing(keep_order))
+    {
+      if(keep_order == 1) return(order.by.id...and.remove.it(merge(x=add.id.column.to.data(x),y=y,..., sort = FALSE)))
+      if(keep_order == 2) return(order.by.id...and.remove.it(merge(x=x,y=add.id.column.to.data(y),..., sort = FALSE)))
+      # if you didn't get "return" by now - issue a warning.
+      warning("The function merge.with.order only accepts NULL/1/2 values for the keep_order variable")
+    } else {return(merge(x=x,y=y,..., sort = sort))}
+  }
 
 }
+# ----
+
