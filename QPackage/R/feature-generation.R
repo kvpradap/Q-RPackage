@@ -2,7 +2,7 @@ create_features <- function() {
   
   fn_list <- list()
   
-  fn_str <-  fill_fn_template("brand", "brand", "lev")
+  fn_str <-  fill_fn_template("publisher", "publisher", "lev")
   fn_list[["lev_brand"]] <- eval(parse(text = fn_str))
   
   fn_str <-  fill_fn_template("title", "title", "jaccard", "tok_qgram", 2,"tok_qgram", "2")
@@ -11,7 +11,7 @@ create_features <- function() {
   fn_str <- fill_fn_template("title", "title", "jaccard", "tok_whitespace", NULL,"tok_whitespace", NULL)
   fn_list[["jac_title_ws_title_ws"]] <- eval(parse(text=fn_str))
   
-  fn_str <- fill_fn_template("price", "price", "diff_vals")
+  fn_str <- fill_fn_template("pages", "pages", "diff_vals")
   fn_list[["diff_price"]] <- eval(parse(text=fn_str))
                               
   return(fn_list)

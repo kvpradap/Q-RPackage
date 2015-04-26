@@ -72,12 +72,14 @@ lev <- function(s1, s2) {
 ndiff_vals <- function(d1, d2) {
   
   if(length(d1) > 0) {
+    d1 <- as.numeric(d1)
     if(is.na(d1)) {
       return(NA)
     }
   }
   
   if(length(d2) > 0) {
+    d2 <- as.numeric(d2)
     if(is.na(d2)) {
       return(NA)
     }
@@ -85,6 +87,7 @@ ndiff_vals <- function(d1, d2) {
   if(is.null(d1) | is.null(d2)) {
     return(0)
   }
+
   
   
   return(abs( (d1-d2)/max(d1, d2)))
@@ -92,12 +95,14 @@ ndiff_vals <- function(d1, d2) {
 
 diff_vals <- function(d1, d2) {
   if(length(d1) > 0) {
+    d1 <- as.numeric(d1)
     if(is.na(d1)) {
       return(NA)
     }
   }
   
   if(length(d2) > 0) {
+    d2 <- as.numeric(d2)
     if(is.na(d2)) {
       return(NA)
     }
@@ -105,6 +110,9 @@ diff_vals <- function(d1, d2) {
   if(is.null(d1) | is.null(d2)) {
     return(0)
   }
+  
+  
+  
   return(abs(d1 - d2))
 }
 

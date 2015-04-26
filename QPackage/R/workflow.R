@@ -4,7 +4,7 @@
 #read_files <- function() {
 if(0) {
   print("Importing walmart data")
-  walmart <- read_csv("../QPackage/inst//extdata/walmartProds_cleaned.csv", status = read_status)
+  walmart <- read_csv("../QPackage/inst//extdata/books/walmart.csv", status = read_status)
   print(read_status)
   
   # check id
@@ -17,33 +17,33 @@ if(0) {
   print(status)
   
   
-  # -- amazon
-  print("Importing amazon data")
-  amazon <- read_csv("../QPackage/inst//extdata/amazonProds_cleaned.csv", status = read_status)
+  # -- bowker
+  print("Importing bowker data")
+  bowker <- read_csv("../QPackage/inst//extdata/books/bowker.csv", status = read_status)
   print(read_status)
   
   # check id
-  status <- check_id(amazon, list("id"))
+  status <- check_id(bowker, list("id"))
   print(status)
   
   
   # set id
-  status <- set_id(amazon, list("id"))
+  status <- set_id(bowker, list("id"))
   print(status)
 #}
 
 }
 # View data ----------------------------------------------- start
-#View(amazon)
+#View(bowker)
 #View(walmart)
 
 # ---- blocking
 
-#do_block <- function(walmart, amazon, attr1, attr2) {
+#do_block <- function(walmart, bowker, attr1, attr2) {
 if(0) {
-attr1 <- "brand"
-attr2 <- "brand"
-cand_set <-  apply_block(walmart, amazon, attr_equiv_block, attr1, attr2, col_names_a = list("title", "price"), col_names_b = list("title", "price"))
+attr1 <- "isbn"
+attr2 <- "isbn"
+cand_set <-  apply_block(walmart, bowker, attr_equiv_block, attr1, attr2, col_names_a = list("title", "author", "binding", "publisher", "pages"), col_names_b = list("title", "author", "binding", "publisher", "pages"))
 #}
 
 # ---- sample data set

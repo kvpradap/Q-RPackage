@@ -165,3 +165,28 @@ if(0) {
     
   }    
 
+if(0) {
+  is.integer0 <- function(x)
+  {
+    is.integer(x) && length(x) == 0L
+  }
+  
+  keys <- unlist(cand_set@key)
+  tbl_a_idx <- grep("A.", keys)
+  
+  if(!is.integer0(tbl_a_idx)) {
+    tbl_a_key <- keys[tbl_a_idx]
+    cset_a <- merge(walmart, cand_set, by.x = unlist(walmart@key), by.y = tbl_a_key)
+  }
+  tbl_b_idx <- grep("B.", keys)
+  
+  if(!is.integer0(tbl_b_idx)) {
+    tbl_b_key <- keys[tbl_b_idx]
+    cset_b <- merge(bowker, cand_set, by.x = unlist(walmart@key), by.y = tbl_b_key)
+  }
+  cset_a_small <- cset_a[1:5, ]
+  cset_b_small <- cset_b[1:5, ]
+  fn_list <- create_features()
+  apply_feat_fn_over_2tables(cset_a_small, cset_b_small, fn_list)
+
+}

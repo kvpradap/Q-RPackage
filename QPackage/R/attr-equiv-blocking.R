@@ -49,7 +49,7 @@ attr_equiv_block <- function(table_a, table_b, block_attr1, block_attr2, col_lis
     }
   }
   
-  cand_set <- merge(table_a, table_b, by.x = block_attr1, by.y = block_attr2)
+  cand_set <- merge(table_a, table_b, by.x = block_attr1, by.y = block_attr2, incomparables = NA)
   
   
   # ------ retain only required columns --------------------
