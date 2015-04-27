@@ -1,3 +1,37 @@
+createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE) 
+{
+  if (is.numeric(y)) {
+    cuts <- floor(length(y)/k)
+    if (cuts < 2) 
+      cuts <- 2
+    if (cuts > 5) 
+      cuts <- 5
+    y <- cut(y, unique(quantile(y, probs = seq(0, 1, length = cuts))), 
+             include.lowest = TRUE)
+  }
+  if (k < length(y)) {
+    y <- factor(as.character(y))
+    numInClass <- table(y)
+    foldVector <- vector(mode = "integer", length(y))
+    for (i in 1:length(numInClass)) {
+      seqVector <- rep(1:k, numInClass[i]%/%k)
+      if (numInClass[i]%%k > 0) 
+        seqVector <- c(seqVector, sample(1:k, numInClass[i]%%k))
+      foldVector[which(y == dimnames(numInClass)$y[i])] <- sample(seqVector)
+    }
+  }
+  else foldVector <- seq(along = y)
+  if (list) {
+    out <- split(seq(along = y), foldVector)
+    names(out) <- paste("Fold", gsub(" ", "0", format(seq(along = out))), 
+                        sep = "")
+    if (returnTrain) 
+      out <- lapply(out, function(data, y) y[-data], y = seq(along = y))
+  }
+  else out <- foldVector
+  out
+}
+
 cv_kfold <- function(feat_table, num_folds, model, model_args = list(), predict_args = list()) {
   
   if(!is_labeled_table(feat_table)) {
@@ -19,7 +53,7 @@ cv_kfold <- function(feat_table, num_folds, model, model_args = list(), predict_
   
   
 
-  folds <- caret::createFolds(1:nrow(feat_table), k = num_folds) # default value of k is 10
+  folds <- createFolds(1:nrow(feat_table), k = num_folds) # default value of k is 10
   
   num_correct <- c()
   num_total <- c()
