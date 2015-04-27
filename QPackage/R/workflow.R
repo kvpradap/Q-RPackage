@@ -51,4 +51,39 @@ sampled_data <- sample_qtable(cand_set, 25)
   
 # ---- label data set
 labeled_data <- label_data(sampled_data)
+
+# --- create features
+feature_list <- create_features()
+
+
+# --- compute feature vectors
+
+labeled_feat_vec <- convert_to_feature_vecs(walmart, bowker, labeled_data, feature_list)
+
+# --- model selection
+# --- compute accuracy for different models with CV using labeled data
+
+# Models compared : rpart, randomForest, SVM
+# do 10 fold cross validation
+
+library(rpart)
+acc_rf <- cv_kfold(labeled_feat_vec, 10, rpart, predict_args = list(type = "class"))
+
+library(randomForest)
+acc_rf <- cv_kfold(labeled_feat_vec, 10, randomForest)
+
+library(e1071)
+acc_rf <- cv_kfold(labeled_feat_vec, 10, svm)
+
+
+# The user chooses randomForest to train on whole labeled data
+model <- train_model(labeled_feat_vec, randomForest)
+
+# Use the trained model to predict labels for candidate set
+candset_feat_vec <- convert_to_feature_vecs(walmart, bowker, cand_set, feature_list)
+candset_fv_with_labels<- predict_label(candset_feat_vec, model)
+
+View(merge(cand_set,candset_fv_with_labels))
+
+
 }

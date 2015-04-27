@@ -26,8 +26,21 @@ jaccard <- function(s1, s2) {
     s2 <- unlist(s2)
   }
   
+  
+  # trick to match array type required at java side
+  if(length(s1)) {
+    s1 <- rep(s1, 2)
+  }
+  
+  # trick to match array type required at java side
+  if(length(s2)) {
+    s2 <- rep(s2, 2)
+  }
+  
   # call java code
   sim_obj <- .jnew("build/SimilarityFunction")
+  
+      
   sim_val <- .jcall(sim_obj,"D", "jaccard", s1, s2)
   
   return(sim_val)

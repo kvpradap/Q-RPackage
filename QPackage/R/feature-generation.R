@@ -64,7 +64,7 @@ fill_fn_template <- function(attr1, attr2, simfunction, tok1 = NULL, tok1param =
 # (i) labeled data that has label as the last column
 # (ii) candidate set
 
-apply_feat_fn <- function(table_a, table_b, cand_set, fn_list) {
+convert_to_feature_vecs <- function(table_a, table_b, cand_set, fn_list) {
   
   # basic checks
   if(!is_qtable(table_a)) {
