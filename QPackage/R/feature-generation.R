@@ -118,7 +118,7 @@ apply_feat_fn <- function(table_a, table_b, cand_set, fn_list) {
   
   feat_vec <- cbind(cand_set[, keys], feat_vec)
   if(lbl_flag) {
-    feat_vec <- cbind(feat_vec, lbl_col)
+    feat_vec <- cbind(feat_vec, "label"=lbl_col)
   }
   feat_vec <- qtable(feat_vec)
   set_id(feat_vec, list(keys))
