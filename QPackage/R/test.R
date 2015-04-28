@@ -267,3 +267,91 @@ if(0) {
 }
 # ----
 
+if(0) {
+  word_len <- function(s) {
+    length(unlist(strsplit(s, " ")))
+  }
+  check_valid <- function(s, simlist, toklist) {
+    s <- unlist(s)
+    if(any(s %in% simlist)) {
+      return(NULL)
+    }
+    if(any(s %in% toklist))
+      return(NULL)
+    return(s)
+  }
+  fill_fn <- function(s, l) {
+    l <- unlist(l)
+    s <- unlist(s)
+    
+    s <- list(s)
+    l <- list(l)
+    print(s)
+    print(l)
+    fn_str <- do.call(fill_fn_template, c(l, s))
+    fn_obj <- eval(parse(text = fn_str))
+  }
+  
+  a <- list()
+  b <- list()
+   b[[1]] <- list("lev")
+   b[[2]] <- list("jaccard", "tok_whitespace", NULL, "tok_whitespace", NULL)
+   b[[3]] <- list("jaccard", "tok_qgram", 3, "tok_qgram", 3)
+  a$mws <- b
+
+}
+
+if(FALSE) {
+  w <- walmart_bk_dataset
+  b <- bowker_bk_dataset
+  
+  attr_corres = NULL
+  if(is.null(attr_corres)) {
+    c1 <- colnames(w)
+    c2 <- colnames(b)
+    cmn <- setdiff(intersect(c1, c2), c(unlist(w@key), unlist(b@key)))
+    attr_corres <- lapply(cmn, rep, 2)    
+  }
+  
+  global_simlist <- c("jaccard, lev")
+  global_toklist <- c("tok_whitespace", "tok_gram")
+  
+  allowed_simlist <- c("jaccard", "lev")
+  allowed_toklist <- c( "tok_qgram")
+  
+  # for loop start
+  attrs <- attr_corres[[1]]
+  if(class(w[, attrs[1]]) == class(w[, attrs[2]])) {
+    if(class(w[, attrs[1]] == "character")) {
+      len1 <- lapply(w[, attrs[1]], word_len)
+      len1 <- unlist(len1)
+      len2 <- lapply(w[, attrs[2]], word_len)
+      len2 <- unlist(len1)
+      if(mean(len1) > 5 && mean(len2) > 5) {
+        mws <- a$mws
+        avoid_simlist <- setdiff(global_simlist, allowed_simlist)
+        avoid_toklist <- setdiff(global_toklist, allowed_toklist)
+        valid_list <- lapply(mws, check_valid, avoid_simlist, avoid_toklist)
+        valid_list <- valid_list[!sapply(valid_list, is.null)]
+        attr_list <- lapply(attrs, list)
+        
+      }
+    }
+  }
+  
+  # for loop end
+  
+}
+fill_fn <- function(s, l) {
+  fn_str <- do.call(fill_fn_template, c(l, s))
+  fn_obj <- eval(parse(text = fn_str))
+  return(fn_obj)
+}
+get_names <- function(s, attrs) {
+  dict <- list()
+  dict["jaccard"] <- "jac"
+  dict["tok_whitespace"] <- "ws"
+  dict["tok_qgram"] <- "qgm"
+  dict["lev"] <- "lev"
+  paste0(attrs, dict[s], sep="", collapse="_")
+}
