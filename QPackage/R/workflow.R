@@ -53,7 +53,8 @@ sampled_data <- sample_qtable(cand_set, 25)
 labeled_data <- label_data(sampled_data)
 
 # --- create features
-feature_list <- create_features()
+#feature_list <- create_features(walmart, bowker, list(c("title", "title"), c("numAuthors", "numAuthors"), c("binding", "binding")))
+feature_list <- create_features(walmart, bowker)
 
 
 # --- compute feature vectors
@@ -67,13 +68,13 @@ labeled_feat_vec <- convert_to_feature_vecs(walmart, bowker, labeled_data, featu
 # do 10 fold cross validation
 
 library(rpart)
-acc_rf <- cv_kfold(labeled_feat_vec, 10, rpart, predict_args = list(type = "class"))
+acc_dt <- cv_kfold(labeled_feat_vec, 10, rpart, predict_args = list(type = "class"))
 
 library(randomForest)
 acc_rf <- cv_kfold(labeled_feat_vec, 10, randomForest)
 
 library(e1071)
-acc_rf <- cv_kfold(labeled_feat_vec, 10, svm)
+acc_svm <- cv_kfold(labeled_feat_vec, 10, svm)
 
 
 # The user chooses randomForest to train on whole labeled data

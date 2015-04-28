@@ -375,11 +375,24 @@ smith_waterman_gotoh <- function(s1, s2) {
 
 # numeric similarities
 exact_match <- function(d1, d2) {
-  if(is.null(s1) | is.null(s2)) {
+  if(is.null(d1) | is.null(d2)) {
     return(0) 
   }
   if(length(d1) == 0 | length(d2) == 0)
     return(0)
+  if(length(d1) > 0) {
+   
+    if(is.na(d1)) {
+      return(NA)
+    }
+  }
+  
+  if(length(d2) > 0) {
+   
+    if(is.na(d2)) {
+      return(NA)
+    }
+  }
   if(d1 == d2)
     return(1)
   else
