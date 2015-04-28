@@ -322,7 +322,7 @@ if(FALSE) {
   # for loop start
   attrs <- attr_corres[[1]]
   if(class(w[, attrs[1]]) == class(w[, attrs[2]])) {
-    if(class(w[, attrs[1]] == "character")) {
+    if(class(w[, attrs[1]]) == "character") {
       len1 <- lapply(w[, attrs[1]], word_len)
       len1 <- unlist(len1)
       len2 <- lapply(w[, attrs[2]], word_len)
@@ -333,7 +333,8 @@ if(FALSE) {
         avoid_toklist <- setdiff(global_toklist, allowed_toklist)
         valid_list <- lapply(mws, check_valid, avoid_simlist, avoid_toklist)
         valid_list <- valid_list[!sapply(valid_list, is.null)]
-        attr_list <- lapply(attrs, list)
+        attr_list <- lapply(attrs, id_fn)
+        fn_objs <- lapply(valid_list, fill_fn, attr_list)
         
       }
     }
@@ -342,10 +343,14 @@ if(FALSE) {
   # for loop end
   
 }
+id_fn <- function(inp) {
+  inp
+}
 fill_fn <- function(s, l) {
-  fn_str <- do.call(fill_fn_template, c(l, s))
-  fn_obj <- eval(parse(text = fn_str))
-  return(fn_obj)
+   fn_str <- do.call(fill_fn_template, c(l, s))
+   fn_obj <- eval(parse(text = fn_str))
+   return(fn_obj)
+
 }
 get_names <- function(s, attrs) {
   dict <- list()
