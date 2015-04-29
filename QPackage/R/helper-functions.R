@@ -71,3 +71,12 @@ merge.with.order <- function(x,y, ..., sort = T, keep_order = 1)
     warning("The function merge.with.order only accepts NULL/1/2 values for the keep_order variable")
   } else {return(merge(x=x,y=y,..., sort = sort))}
 }
+
+# display sim functions
+show_builtin_simfuns <- function() {
+  QPackage:::gbl_sim_fns...
+}
+
+show_builtin_tokenizers <- function() {
+  QPackage:::gbl_toks...
+}

@@ -15,15 +15,15 @@ This document provides instructions to install QPackage in R and how it can be u
 
 ## Installation
 
-QPackage is implemented in R language. We assume that R is already installed in the system, if not R can be installed from [R site](http://cran.r-project.org) . Installing QPackage first requires setting some environment variables and then the package can be installed from GitHub or using a tar ball.
+QPackage is implemented in R language. We assume that R is already installed in the system, if not R can be installed from [R site](http://cran.r-project.org) . Installing QPackage requires setting some environment variables and the package can then be installed from GitHub or using a tar ball.
 
 ### Environment setup
 
 In order to install QPackage we need to set two environment variables: (1) JAVA_HOME, and (2) CLASS_PATH. JAVA_HOME must be set to the path where JDK is installed. If JDK is not installed, it can be installed from [java site](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 For example, in unix systems JAVA_HOME and CLASS_PATH can be set as follows
 ```
-bash$ export JAVA_HOME = ...
-bash$ export CLASS_PATH = ...
+bash$ export JAVA_HOME=/scratch/pradap/local/share/jdk1.7.0_25
+bash$ export CLASS_PATH = .:${CLASS_PATH}
 
 ```
 and then execute the following command
@@ -31,7 +31,7 @@ and then execute the following command
 bash$ R CMD javareconf -e
 ```
 
-**Note:** Installing a R package in CSL machines (using R at ```/usr/bin/R```) require root permissions, which we donot have. We need to install R packages in a custom directory where there is read/write access. For example, let ```/scratch/pradap/r-libs``` directory be used to install R packages. 
+**Note:** Installing a R package in CSL machines (using R at ```/usr/bin/R```) require root permissions, which we donot have. We need to install R packages in a custom directory where we have read/write access. For example, let ```/scratch/pradap/r-libs``` be the directory that we decide to use for installing R packages. 
 
 Execute the following command to create the directory
 
@@ -67,11 +67,11 @@ Once the installation goes through, execute the following command to use the pac
 ```
 ### Installing from Tarball
 
-To install QPackage from tarball, first download the package from [here](http://pages.cs.wisc.edu/~pradap). Lets say that the package is downloaded at ```/scratch/pradap/downloads/QPackage_1.0.tar.gz```. 
+To install QPackage from tarball, first download the package from [here](http://pages.cs.wisc.edu/~pradap/qpackage/QPackage_1.0.tar.gz). Lets say that the package is downloaded at ```/scratch/pradap/downloads/QPackage_1.0.tar.gz```. 
 Now to install the package, execute the following command
 
 ```
-> install.packages("/scratch/pradap/downloads/QPackage_1.0.tar.gz", repos = NULL, sourece = TRUE)
+> install.packages("/scratch/pradap/downloads/QPackage_1.0.tar.gz", repos = NULL, source = TRUE, lib="/scratch/pradap/r-libs")
 
 ```
 
@@ -132,68 +132,212 @@ print(t$title)
 # brand
 print(t$brand)
 ```
-
 ### Import data
-#### Check id
+In QPackage, data in csv files can be imported into a qtable using ```read_csv``` command. 
+The package includes walmart and bowker book datasets as csv files. We can read them into qtables as follows
 
-#### Set id
+```{r}
+# Get the path of bowker.csv file that is included along with the package
+bowker_file_path <- system.file("extdata/books", "bowker.csv", package = "QPackage")
+# Use read_csv to read the contents of csv file
+bowker <- read_csv(bowker_file_path, status = read_status)
+
+# print the status
+print(read_status) #0 success, 1 error
+
+# print the class
+class(bowker)
+
+```
+Once the csv files are read into qtable, we can check if an attribute can be set as key attribute
+
+```{r}
+# Display colnames of bowker
+colnames(bowker)
+# check whether "id" can be set as key attribute
+is_id <- check_id(bowker, list("id")) # 0 success, 1 error
+# print the result
+print(is_id)
+```
+Given that ```id``` can be set as key attribute, we can set it using ```set_id``` command
+
+```{r}
+# set "id" as key attribute
+exit_status <- set_id(bowker, list("id"))
+print(exit_status) # 0 success, 1 error
+print(bowker@key)
+```
 
 #### Pre-loaded datasets
-### Export data
+
+For convenience, QPackage is preloaded with bowker and walmart book datasets. The preloaded datasets can be attached to R session using the following command
+
+```{r}
+data(bowker_bk_dataset)
+data(walmart_bk_dataset)
+```
+The above command loads bowker dataset to ```bowker_bk_dataset``` symbol and walmart dataset to ```walmart_bk_dataset```. The loaded datasets can be used as normal qtables.
+
+```{r}
+# assign to different variable
+walmart <- walmart_bk_dataset
+bowker <- bowker_bk_dataset
+
+# print the class
+class(bowker)
+
+# print key attribute
+print(bowker@key)
+```
 
 ### View data
 
+The loaded qtable can be viewed using the following command.
+
+```{r}
+#View(bowker)
+```
+
+Currently it uses ```View``` command in R to display the contents.
+
 ### Blocking
+Once the datasets are loaded, the user would like to do blocking as a step prior to matching. As a first step attribute equivalence based blocking is supported. In our case, given that walmart and bowker datasets are loaded the user may want to do blocking using ```isbn``` attribute and may want to include ```title```, ```author``` and other attributes in the candidate set. 
+
+```{r}
+# block attributes from walmart and bowker dataset 
+attr1 <- "isbn" # from walmart dataset
+attr2 <- "isbn" # from bowker dataset
+
+# do blocking
+cand_set <- apply_block(walmart, bowker, attr_equiv_block, attr1, attr2, 
+                        col_names_a = list("title", "author", "binding", "publisher", "pages"), 
+                        col_names_b = list("title", "author", "binding", "publisher", "pages")
+                        )
+# number of rows in candidate set
+nrow(cand_set)
+
+# attributes in candidate set
+colnames(cand_set)
+```
 
 ### Sample data
 
+After blocking, the user would like to sample the candidate set that can be used for labeling. As a first step only random sampling is supported and it can done using the following command
+
+```{r}
+sample_data <- sample_qtable(cand_set, 25)
+```
+
 ### Label data
+
+The sampled data can be shown to the user and it contains an extra ```label``` column. The user can mark a pair as match (```1```) or non-match (```0```) in the label column.
+
+```
+labeled_cset <- label_data(sampled_data)
+
+``` 
+Once the user finishes marking, he can just close the browser (there is no explicit ```save``` command).
 
 ### Create features
 
+The labeled data can be used to generate feature vectors to train machine learning models. A feature is a similarity measure between a pair of attributes. In QPackage a set of built-in similarity functions and tokenizers are supported and they can be viewed using the following commands
+
+```{r}
+show_builtin_simfuns()
+show_builtin_tokenizers()
+```
+
+As a first step, given two input tables and their attribute correspondence, features are generated automatically using a set of heuristics based on attribute type and its properties, such as average number of words for character type. 
+For instance, the user can generate features using ```title```, ```numAuthors``` and ```binding``` attributes from bowker and walmart table
+
+
+```{r}
+feature_list <- create_features(walmart, bowker, 
+                                list(c("title", "title"), 
+                                     c("numAuthors", "numAuthors"), 
+                                     c("binding", "binding")))
+length(feature_list)
+```
+Features are R functions that takes in two ```tuples``` and returns a numeric value
+
+```{r}
+print(feature_list[[2]])
+```
+
+```create_features``` can optionally take list of allowed tokenizers and similarity functions as input, and restrict the features generated.
+
+```{r}
+test_list <- create_features(walmart, bowker, 
+                                list(c("title", "title"), 
+                                     c("numAuthors", "numAuthors"), 
+                                     c("binding", "binding")), 
+                                list("jaccard"), list("tok_qgram"))
+
+length(test_list)
+print(test_list)
+```
+Using the features, feature vector can be generated using the following command
+```{r}
+# ignore this command -- done only for illustration
+data(test_label_cset) # this should not be executed.
+
+labeled_feat_vec <- convert_to_feature_vecs(walmart, bowker, label_cset, feature_list)
+
+# print column names
+colnames(labeled_feat_vec)
+
+# print first row
+labeled_feat_vec[1, ]
+```
 ### Model selection
+
+As a next step, the user would like to choose a learning model for matching. He would like to compare the accuracies using crossvalidation (CV).
+For instance, the user wants to compare 3 learning models : (1) Decision tree, (2) Random forest, and (3) SVM. The accuracy can be computed using 10 fold CV as follows
+```{r}
+# Models compared : rpart, randomForest, SVM
+# do 10 fold cross validation
+
+# install.packages("rpart")  ## required to install rpart
+library(rpart)
+acc_dt <- cv_kfold(labeled_feat_vec, 10, rpart, predict_args = list(type = "class"))
+
+acc_dt
+
+#install.packages("randomForest") ## required to install randomFores
+library(randomForest) 
+acc_rf <- cv_kfold(labeled_feat_vec, 10, randomForest)
+
+acc_rf
+
+# install.packages("e1071") ## required to install e1071
+library(e1071)
+acc_svm <- cv_kfold(labeled_feat_vec, 10, svm)
+
+acc_svm
+
+```
 
 ### Train model
 
+Based on the accuracies, the user can select one of the models to train the whole labeled set. For instance, if the user chooses ```randomForest``` model then he can issue the following command to train it using whole labeled set
+
+```{r}
+model <- train_model(labeled_feat_vec, randomForest)
+```
+
 ### Predict labels
 
- 
-Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+The trained model can be used to predict the candidate set. For instance, the user can first generate feature vector for candidate set and can then use trained model to predict the lables
 
-## Styles
+```{r}
+candset_feat_vec <- convert_to_feature_vecs(walmart, bowker, cand_set, feature_list)
+candset_fv_with_labels<- predict_label(candset_feat_vec, model)
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+colnames(candset_fv_with_labels)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+Optionally, the candidate set along with feature vectors can be viewed using the following command
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+````
+View(merge(cand_set,candset_fv_with_labels))
+````
