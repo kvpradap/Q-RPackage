@@ -4,7 +4,7 @@
 \alias{CheckId}
 \title{Generic function for CheckId}
 \usage{
-CheckId(object, idName)
+CheckId(object, idCol)
 }
 \description{
 Generic function for CheckId
