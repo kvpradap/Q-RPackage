@@ -11,85 +11,122 @@ vignette: >
 
 ## Introduction
 
-This document provides instructions to install QPackage in R and how it can be used perform different steps in EMS workflow 
+This document provides instructions to install QPackage in R and its usage to perform different steps in EMS workflow. 
 
-## Installation
-
-QPackage is implemented in R language. We assume that R is already installed in the system, if not R can be installed from [R site](http://cran.r-project.org) . Installing QPackage requires setting some environment variables and the package can then be installed from GitHub or using a tar ball.
-
-### Environment setup
-
-In order to install QPackage we need to set two environment variables: (1) JAVA_HOME, and (2) CLASS_PATH. JAVA_HOME must be set to the path where JDK is installed. If JDK is not installed, it can be installed from [java site](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
-For example, in unix systems JAVA_HOME and CLASS_PATH can be set as follows
-```
-bash$ export JAVA_HOME=/scratch/pradap/local/share/jdk1.7.0_25
-bash$ export CLASS_PATH = .:${CLASS_PATH}
-
-```
-and then execute the following command
-```
-bash$ R CMD javareconf -e
-```
-
-**Note:** Installing a R package in CSL machines (using R at ```/usr/bin/R```) require root permissions, which we donot have. We need to install R packages in a custom directory where we have read/write access. For example, let ```/scratch/pradap/r-libs``` be the directory that we decide to use for installing R packages. 
-
-Execute the following command to create the directory
+## Convention
+This document uses shell commands and R code blocks for illustration.
+The shell commands are shown with an explicit ```bash``` prompt, for example
 
 ```
 bash$ mkdir /scratch/pradap/r-libs
 ```
 
+The R code block in this document intermingle R command and its output, so that a user can copy and paste the R command and check its output. 
+
+For example, R command and its output will look like
+
+```{r}
+print("Hello World")
+
+```
+
+We can observe that the output starts with ```## ```. 
+
+In some cases, the output is not shown as they were quite large or they open up GUI, such commands are noted in comment as in the following example.
+
+```
+View(iris) # output is suppressed
+```
+
+## Installation
+
+QPackage is implemented in R. We assume that R is already installed in the system, if not R can be installed from [R site](http://cran.r-project.org) . Installing QPackage has two important steps:(1) Setting some environment variables, and (2) Installing package from GitHub or tarball.
+
+### Environment setup
+
+To install QPackage we need to set two environment variables: (1) JAVA_HOME, and (2) CLASS_PATH. 
+JAVA_HOME must be set to the path where JDK is installed. If JDK is not installed, it can be installed from [java site](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+CLASS_PATH must include current directory (```.```) in its path.
+
+For example, in unix systems JAVA_HOME and CLASS_PATH can be set from command prompt as follows
+```
+bash$ export JAVA_HOME=/scratch/pradap/local/share/jdk1.7.0_25
+bash$ export CLASS_PATH=.:${CLASS_PATH}
+
+```
+After exporting the variables, execute the following command from command prompt
+
+```
+bash$ R CMD javareconf -e
+```
+
+**Note:** Installing a R package in CSL machines (using R at ```/usr/bin/R```) require root permissions, which we donot have. We need to install R packages in a custom directory where we have read/write access. For example, let ```/scratch/pradap/r-libs``` be the directory that we decide to use for installing R packages and the directory can be created using the following command. 
+
+```
+bash$ mkdir /scratch/pradap/r-libs
+
+```
+
 
 ### Installing from GitHub
 
-To install QPackage from GitHub, first install ```devtools``` package. It can be installed using the following command in R prompt
+Installing package from GitHub has two steps: (1) Installing ```devtools``` package, and (2) Use ```install_github``` command to install QPackage from GitHub
+
+```devtools``` package can be installed using the following command in R
+
 
 ```
-> install.packages("devtools", lib="/scratch/pradap/r-libs")
+# set the custom directory to R's search path
+.libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
+
+# install devtools package
+install.packages("devtools") # output is suppressed
 
 ```
 Once the installation goes through, execute the following command to use the package
 
 ```
-> library("devtools", lib.loc="/scratch/pradap/r-libs")
+library("devtools") # output is suppressed
 
 ```
 Now the QPackage can be installed using the following command
 
 ```
-> with_libpaths(new = "/scratch/pradap/r-libs", install_github("kvpradap/Q-RPackages/QPackage"))
+install_github("kvpradap/Q-RPackage/QPackage") # output is suppressed
 
 ```
 Once the installation goes through, execute the following command to use the package
-```
-> library("QPackage", lib.loc="/scratch/pradap/r-libs")
+```{r}
+library("QPackage") 
 
 ```
 ### Installing from Tarball
 
-To install QPackage from tarball, first download the package from [here](http://pages.cs.wisc.edu/~pradap/qpackage/QPackage_1.0.tar.gz). Lets say that the package is downloaded at ```/scratch/pradap/downloads/QPackage_1.0.tar.gz```. 
-Now to install the package, execute the following command
+Installing package from Tar ball has two steps: (1) Downloading the tarball, and (2) Use tarball to install the package
+
+The latest version of QPackage (as tarball) can be downloaded from  [here](http://pages.cs.wisc.edu/~pradap/qpackage/QPackage_1.0.tar.gz). Lets say that the package is downloaded at ```/scratch/pradap/downloads/QPackage_1.0.tar.gz```. 
+
+To install the package, execute the following command
 
 ```
-> install.packages("/scratch/pradap/downloads/QPackage_1.0.tar.gz", repos = NULL, source = TRUE, lib="/scratch/pradap/r-libs")
+# set the custom directory to R's search path
+.libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
+
+# install rJava package
+install.packages("rJava") # output is suppressed
+
+install.packages("/scratch/pradap/downloads/QPackage_1.0.tar.gz", 
+          repos = NULL, source = TRUE) # output is suppressed
 
 ```
 
 Once the installation goes through, execute the following command to use the package
-```
-> library("QPackage", lib.loc="/scratch/pradap/r-libs")
 
 ```
-**Note**: Instead of including ```lib.loc``` in ```library``` everytime in R session, we can do the following
-```
-> .libPaths("/scratch/pradap/r-libs")
+library("QPackage") # output is suppressed
 
 ```
-and then execute the following 
-
-```{r}
-library(QPackage)
-```
+**Note**: Installation from GitHub is recommended as it automatically installs all the dependency packages.
 
 ## EMS workflow
 An end-to-end workflow in EMS  possibly contain the following steps
@@ -113,11 +150,12 @@ There are two main classes in QPackage.
 
 ### qtable
 
-It is used to represent input tables such as walmart product table. It is inherited from R ```data.frame```. It contains an attribute called ```key``` that stores a list of unique identifiers in the table. ```key``` attribute is similar to primary key attribute in SQL tables.  
+It is used to represent input tables such as walmart product dataset. It is inherited from R's ```data.frame```. It contains an attribute called ```key``` that stores a list of unique identifiers in the table. ```key``` attribute is similar to primary key attribute in SQL tables.  
 
 ### tuple
 
-It is used to represent an entity in a table such as product in walmart product table. It is represented as ```named list``` in R. 
+It is used to represent an entity in a table such as a product in walmart product dataset. It is represented as ```named list``` in R.
+
 In QPackage a tuple can be created as follows
 
 ```{r}
@@ -132,9 +170,12 @@ print(t$title)
 # brand
 print(t$brand)
 ```
+
 ### Import data
-In QPackage, data in csv files can be imported into a qtable using ```read_csv``` command. 
-The package includes walmart and bowker book datasets as csv files. We can read them into qtables as follows
+
+As a first step, importing data from csv files are supported and it is done using ```read_csv``` command. 
+
+The package is bundled with walmart and bowker book datasets as csv files. We can read them into qtables as follows
 
 ```{r}
 # Get the path of bowker.csv file that is included along with the package
@@ -149,6 +190,7 @@ print(read_status) #0 success, 1 error
 class(bowker)
 
 ```
+
 Once the csv files are read into qtable, we can check if an attribute can be set as key attribute
 
 ```{r}
@@ -159,6 +201,7 @@ is_id <- check_id(bowker, list("id")) # 0 success, 1 error
 # print the result
 print(is_id)
 ```
+
 Given that ```id``` can be set as key attribute, we can set it using ```set_id``` command
 
 ```{r}
@@ -189,19 +232,28 @@ class(bowker)
 # print key attribute
 print(bowker@key)
 ```
+### Export data
+As a first step, exporting data to csv file is supported and it is done using ```write_csv``` command.
+
+```
+status <- write_csv(bowker, 
+          file="/scratch/pradap/downloads/bowker.csv") 
+```
 
 ### View data
 
 The loaded qtable can be viewed using the following command.
 
-```{r}
-#View(bowker)
+```
+View(bowker) # output is suppressed
 ```
 
 Currently it uses ```View``` command in R to display the contents.
 
 ### Blocking
-Once the datasets are loaded, the user would like to do blocking as a step prior to matching. As a first step attribute equivalence based blocking is supported. In our case, given that walmart and bowker datasets are loaded the user may want to do blocking using ```isbn``` attribute and may want to include ```title```, ```author``` and other attributes in the candidate set. 
+Once the datasets are loaded, the user would like to do blocking as a step prior to matching. As a first step attribute equivalence based blocking is supported.
+
+For instance, given that walmart and bowker datasets are loaded, the user may want to do blocking using ```isbn``` attribute and may want to include ```title```, ```author```, ```binding```, ```publisher``` and ```pages``` attributes in the candidate set. 
 
 ```{r}
 # block attributes from walmart and bowker dataset 
@@ -222,7 +274,7 @@ colnames(cand_set)
 
 ### Sample data
 
-After blocking, the user would like to sample the candidate set that can be used for labeling. As a first step only random sampling is supported and it can done using the following command
+After blocking, the user may want to sample the candidate set to label them. As a first step random sampling is supported and it can done using the following command
 
 ```{r}
 sample_data <- sample_qtable(cand_set, 25)
@@ -230,17 +282,20 @@ sample_data <- sample_qtable(cand_set, 25)
 
 ### Label data
 
-The sampled data can be shown to the user and it contains an extra ```label``` column. The user can mark a pair as match (```1```) or non-match (```0```) in the label column.
+As a next step, the user can label sampled data using GUI.  The sampled table is displayed to the user in a GUI  with an extra ```label``` column. 
+The user can the ```label``` column to  mark a pair as match (```1```) or non-match (```0```).
 
 ```
-labeled_cset <- label_data(sampled_data)
+labeled_cset <- label_data(sampled_data) # output is suppressed
 
 ``` 
-Once the user finishes marking, he can just close the browser (there is no explicit ```save``` command).
+Once the user finishes labelling, he can just close the browser (there is no explicit ```save``` command).
 
-### Create features
+### Generating feature vectors
 
-The labeled data can be used to generate feature vectors to train machine learning models. A feature is a similarity measure between a pair of attributes. In QPackage a set of built-in similarity functions and tokenizers are supported and they can be viewed using the following commands
+The labeled data can be used to generate feature vectors to train machine learning models. A feature is a similarity measure between a pair of attributes.
+
+In QPackage a set of built-in similarity functions and tokenizers are supported and they can be viewed using the following commands
 
 ```{r}
 show_builtin_simfuns()
@@ -264,7 +319,7 @@ Features are R functions that takes in two ```tuples``` and returns a numeric va
 print(feature_list[[2]])
 ```
 
-```create_features``` can optionally take list of allowed tokenizers and similarity functions as input, and restrict the features generated.
+```create_features``` can optionally take a list of allowed tokenizers and similarity functions as input, and restrict the features generated.
 
 ```{r}
 test_list <- create_features(walmart, bowker, 
@@ -291,24 +346,33 @@ labeled_feat_vec[1, ]
 ```
 ### Model selection
 
-As a next step, the user would like to choose a learning model for matching. He would like to compare the accuracies using crossvalidation (CV).
-For instance, the user wants to compare 3 learning models : (1) Decision tree, (2) Random forest, and (3) SVM. The accuracy can be computed using 10 fold CV as follows
+Given labeled data and feature vectors, the user would like to choose a learning model for matching. He can choose a model by comparing accuracies from crossvalidation (CV).
+For instance, the user decides to compare 3 learning models : (1) Decision tree, (2) Random forest, and (3) SVM. 
+
+The accuracy can be computed using 10 fold CV as follows
 ```{r}
 # Models compared : rpart, randomForest, SVM
 # do 10 fold cross validation
 
+
+# Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
+# is already executed in the curret R - session
 # install.packages("rpart")  ## required to install rpart
 library(rpart)
 acc_dt <- cv_kfold(labeled_feat_vec, 10, rpart, predict_args = list(type = "class"))
 
 acc_dt
 
+# Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
+# is already executed in the curret R - session
 #install.packages("randomForest") ## required to install randomFores
 library(randomForest) 
 acc_rf <- cv_kfold(labeled_feat_vec, 10, randomForest)
 
 acc_rf
 
+# Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
+# is already executed in the curret R - session
 # install.packages("e1071") ## required to install e1071
 library(e1071)
 acc_svm <- cv_kfold(labeled_feat_vec, 10, svm)
@@ -323,11 +387,16 @@ Based on the accuracies, the user can select one of the models to train the whol
 
 ```{r}
 model <- train_model(labeled_feat_vec, randomForest)
+
+print(model)
 ```
 
 ### Predict labels
 
-The trained model can be used to predict the candidate set. For instance, the user can first generate feature vector for candidate set and can then use trained model to predict the lables
+The trained model can be used to predict the matches in candidate set. 
+
+The user can first generate feature vector for candidate set and can then use trained model to predict the matches.
+
 
 ```{r}
 candset_feat_vec <- convert_to_feature_vecs(walmart, bowker, cand_set, feature_list)
@@ -336,8 +405,10 @@ candset_fv_with_labels<- predict_label(candset_feat_vec, model)
 colnames(candset_fv_with_labels)
 ```
 
+The candidate set with feature vectors has an extra column "predicted_labels" that contains predicted matches (```1```) and non-matches (```0```)
+
 Optionally, the candidate set along with feature vectors can be viewed using the following command
 
 ````
-View(merge(cand_set,candset_fv_with_labels))
+View(merge(cand_set,candset_fv_with_labels)) # output is suppressed
 ````
