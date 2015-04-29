@@ -1,5 +1,4 @@
 # -- import data
-#<<<<<<< HEAD
 # d <- ReadCsv('../QPackage/data/DBLP_cleaned.csv', idCol="id")
 # 
 # d_sample = QTable(d[1:10, ])
@@ -33,7 +32,7 @@
 #   }
 #   assign(subx, x, envir = parent)
 # }
-# =======
+
 # d <- ReadCsv('../QPackage/data/DBLP_cleaned.csv', idCol="id")
 # 
 # d_sample <- QTable(d[1:10, ])
@@ -322,7 +321,7 @@ if(FALSE) {
   # for loop start
   attrs <- attr_corres[[1]]
   if(class(w[, attrs[1]]) == class(w[, attrs[2]])) {
-    if(class(w[, attrs[1]] == "character")) {
+    if(class(w[, attrs[1]]) == "character") {
       len1 <- lapply(w[, attrs[1]], word_len)
       len1 <- unlist(len1)
       len2 <- lapply(w[, attrs[2]], word_len)
@@ -333,7 +332,8 @@ if(FALSE) {
         avoid_toklist <- setdiff(global_toklist, allowed_toklist)
         valid_list <- lapply(mws, check_valid, avoid_simlist, avoid_toklist)
         valid_list <- valid_list[!sapply(valid_list, is.null)]
-        attr_list <- lapply(attrs, list)
+        attr_list <- lapply(attrs, id_fn)
+        fn_objs <- lapply(valid_list, fill_fn, attr_list)
         
       }
     }
@@ -342,16 +342,100 @@ if(FALSE) {
   # for loop end
   
 }
-fill_fn <- function(s, l) {
-  fn_str <- do.call(fill_fn_template, c(l, s))
-  fn_obj <- eval(parse(text = fn_str))
-  return(fn_obj)
-}
-get_names <- function(s, attrs) {
+if(FALSE) {
+  lkp_table <- list()
+  l1 <- list()
+  l1[[1]] <- list("monge_elkan")
+  l1[[2]] <- list("jaccard", "tok_whitespace", NULL, "tok_whitespace", NULL)
+  l1[[3]] <- list("cosine", "tok_whitespace", NULL, "tok_whitespace", NULL)
+  
+  lkp_table$MWM <- l1
+  
+  l1 <- list()
+  l1[[1]] <- list("jaccard", "tok_whitespace", NULL, "tok_whitespace", NULL)
+  l1[[2]] <- list("cosine", "tok_whitespace", NULL, "tok_whitespace", NULL)
+  
+  lkp_table$MWL <- l1
+  
+  l1 <- list()
+  l1[[1]] <- list("monge_elkan")
+  l1[[2]] <- list("jaccard", "tok_whitespace", NULL, "tok_whitespace", NULL)
+  l1[[3]] <- list("jaccard", "tok_qgram", 3, "tok_qgram", 3)
+  l1[[4]] <- list("needleman_wunsch")
+  l1[[5]] <- list("smith_waterman_gotoh")
+  l1[[6]] <- list("smith_waterman")
+  l1[[7]] <- list("cosine", "tok_whitespace", NULL, "tok_whitespace", NULL)
+  
+  lkp_table$MWS <- l1
+  
+  l1 <- list()
+  l1[[1]] <- list("jaro")
+  l1[[2]] <- list("jaro_winkler")
+  l1[[3]] <- list("lev")
+  l1[[4]] <- list("soundex")
+  l1[[5]] <- list("jaccard", "tok_qgram", 3, "tok_qgram", 3)
+  l1[[6]] <- list("exact_match")
+  
+  lkp_table$SWS <- l1
+  
+  l1 <- list()
+  l1[[1]] <- list("abs_diff")
+  l1[[2]] <- list("rel_diff")
+  l1[[3]] <- list("lev")
+  l1[[4]] <- list("exact_match")
+  
+  lkp_table$NUM <- l1
+  auto_gen_table... <- lkp_table
+  
   dict <- list()
   dict["jaccard"] <- "jac"
   dict["tok_whitespace"] <- "ws"
   dict["tok_qgram"] <- "qgm"
   dict["lev"] <- "lev"
-  paste0(attrs, dict[s], sep="", collapse="_")
+  dict["cosine"] <- "cos"
+  dict["monge_elkan"] <- "mel"
+  dict["needleman_wunsch"] <- "nmw"
+  dict["smith_waterman"] <- "sw"
+  dict["smith_waterman_gotoh"] <- "swg"
+  dict["jaro"] <- "jar"
+  dict["jaro_winkler"] <- "jwn"
+  dict["soundex"] <- "sdx"
+  dict["exact_match"] <- "exm"
+  dict["abs_diff"] <- "adf"
+  dict["rel_diff"] <- "rdf"
+  dict["1"] <- "1"
+  dict["2"] <- "2"
+  dict["3"] <- "3"
+  dict["4"] <- "4"
+  
+  
+  feat_lkp_names... <- dict
+  
+  
+  
+  gbl_sim_fns <- c("jaccard", "lev", "cosine", "monge_elkan", "needleman_wunsch", "smith_waterman", "smith_waterman_gotoh", "jaro", "jaro_winkler", "soundex", "exact_match", "abs_diff", "rel_diff")
+  
+  gbl_toks <- c("tok_whitespace", "tok_qgram")
+  
+  gbl_sim_fns... <- gbl_sim_fns
+  gbl_toks... <- gbl_toks
+  
+  
+  id_fn <- function(inp) {
+    inp
+  }
+  fill_fn <- function(s, l) {
+    fn_str <- do.call(fill_fn_template, c(l, s))
+    fn_obj <- eval(parse(text = fn_str))
+    return(fn_obj)
+    
+  }
+  get_names <- function(s, attrs) {
+    dict <- list()
+    dict["jaccard"] <- "jac"
+    dict["tok_whitespace"] <- "ws"
+    dict["tok_qgram"] <- "qgm"
+    dict["lev"] <- "lev"
+    paste0(attrs, dict[s], sep="", collapse="_")
+  }
 }

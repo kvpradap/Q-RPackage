@@ -1,0 +1,199 @@
+---
+title: "Q-Package: Installation and Usage"
+author: "Pradap Konda"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Q-Package: User Manual}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Introduction
+
+This document provides instructions to install QPackage in R and how it can be used perform different steps in EMS workflow 
+
+## Installation
+
+QPackage is implemented in R language. We assume that R is already installed in the system, if not R can be installed from [R site](http://cran.r-project.org) . Installing QPackage first requires setting some environment variables and then the package can be installed from GitHub or using a tar ball.
+
+### Environment setup
+
+In order to install QPackage we need to set two environment variables: (1) JAVA_HOME, and (2) CLASS_PATH. JAVA_HOME must be set to the path where JDK is installed. If JDK is not installed, it can be installed from [java site](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+For example, in unix systems JAVA_HOME and CLASS_PATH can be set as follows
+```
+bash$ export JAVA_HOME = ...
+bash$ export CLASS_PATH = ...
+
+```
+and then execute the following command
+```
+bash$ R CMD javareconf -e
+```
+
+**Note:** Installing a R package in CSL machines (using R at ```/usr/bin/R```) require root permissions, which we donot have. We need to install R packages in a custom directory where there is read/write access. For example, let ```/scratch/pradap/r-libs``` directory be used to install R packages. 
+
+Execute the following command to create the directory
+
+```
+bash$ mkdir /scratch/pradap/r-libs
+```
+
+
+### Installing from GitHub
+
+To install QPackage from GitHub, first install ```devtools``` package. It can be installed using the following command in R prompt
+
+```
+> install.packages("devtools", lib="/scratch/pradap/r-libs")
+
+```
+Once the installation goes through, execute the following command to use the package
+
+```
+> library("devtools", lib.loc="/scratch/pradap/r-libs")
+
+```
+Now the QPackage can be installed using the following command
+
+```
+> with_libpaths(new = "/scratch/pradap/r-libs", install_github("kvpradap/Q-RPackages/QPackage"))
+
+```
+Once the installation goes through, execute the following command to use the package
+```
+> library("QPackage", lib.loc="/scratch/pradap/r-libs")
+
+```
+### Installing from Tarball
+
+To install QPackage from tarball, first download the package from [here](http://pages.cs.wisc.edu/~pradap). Lets say that the package is downloaded at ```/scratch/pradap/downloads/QPackage_1.0.tar.gz```. 
+Now to install the package, execute the following command
+
+```
+> install.packages("/scratch/pradap/downloads/QPackage_1.0.tar.gz", repos = NULL, sourece = TRUE)
+
+```
+
+Once the installation goes through, execute the following command to use the package
+```
+> library("QPackage", lib.loc="/scratch/pradap/r-libs")
+
+```
+**Note**: Instead of including ```lib.loc``` in ```library``` everytime in R session, we can do the following
+```
+> .libPaths("/scratch/pradap/r-libs")
+
+```
+and then execute the following 
+
+```{r}
+library(QPackage)
+```
+
+## EMS workflow
+An end-to-end workflow in EMS  possibly contain the following steps
+
+1. Import data, check constraints export data
+2. Browse/understand/clean/transform data
+3. Blocking
+4. Evaluate/Debug blocking result
+5. Matching/Clustering
+6. Accuracy estimation
+7. Debug
+8. Visualization of result and user interaction
+
+The goal of QPackage is to support all the above steps. As a first step a subset of above steps are supported and they are described in the following sections.
+
+## Main classes
+There are two main classes in QPackage.
+
+* qtable
+* tuple
+
+### qtable
+
+It is used to represent input tables such as walmart product table. It is inherited from R ```data.frame```. It contains an attribute called ```key``` that stores a list of unique identifiers in the table. ```key``` attribute is similar to primary key attribute in SQL tables.  
+
+### tuple
+
+It is used to represent an entity in a table such as product in walmart product table. It is represented as ```named list``` in R. 
+In QPackage a tuple can be created as follows
+
+```{r}
+t <- tuple("title" = "This is a title", "brand" = "Product brand")
+
+# print the class
+print(class(t))
+
+# print contents of t
+# title
+print(t$title)
+# brand
+print(t$brand)
+```
+
+### Import data
+#### Check id
+
+#### Set id
+
+#### Pre-loaded datasets
+### Export data
+
+### View data
+
+### Blocking
+
+### Sample data
+
+### Label data
+
+### Create features
+
+### Model selection
+
+### Train model
+
+### Predict labels
+
+ 
+Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+
+## Styles
+
+The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+
+    output: 
+      rmarkdown::html_vignette:
+        css: mystyles.css
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))

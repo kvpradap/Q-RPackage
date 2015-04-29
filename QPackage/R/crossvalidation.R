@@ -41,11 +41,12 @@ cv_kfold <- function(feat_table, num_folds, model, model_args = list(), predict_
   
   feat_table <- data.frame(feat_table)
 
-  # machine learning models don't like NAs
+  # machine learning models don't like NAs or NaNs
   feat_table[is.na(feat_table)] <- 0 # need to revisit on what value should be set
-
+  #feat_table <- rapply( feat_table, f=function(x) ifelse(is.nan(x),0,x), how="replace" )
   
   
+  #feat_table <- data.frame(feat_table)
   feat_table[, "label"] <- as.factor(feat_table[, "label"])
   x <- feat_table[ , -which(names(feat_table) %in% keys)]
   x_p <- x[, -which(names(x) %in% "label")]

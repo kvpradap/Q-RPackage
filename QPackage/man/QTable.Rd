@@ -5,7 +5,7 @@
 \title{Constructor function for QTable
 Extends data.frame to contain meta data such as Id attribute}
 \usage{
-QTable(..., genId = FALSE)
+QTable(..., idCol = "")
 }
 \description{
 Constructor function for QTable

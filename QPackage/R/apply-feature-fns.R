@@ -1,66 +1,5 @@
-create_features <- function() {
-  
-  fn_list <- list()
-  
-  fn_str <-  fill_fn_template("publisher", "publisher", "lev")
-  fn_list[["lev_pub"]] <- eval(parse(text = fn_str))
-  
-  fn_str <-  fill_fn_template("title", "title", "jaccard", "tok_qgram", 2,"tok_qgram", "2")
-  fn_list[["jac_title_qgram2_title_qgram_2"]] <- eval(parse(text = fn_str))
-  
-  fn_str <- fill_fn_template("title", "title", "jaccard", "tok_whitespace", NULL,"tok_whitespace", NULL)
-  fn_list[["jac_title_ws_title_ws"]] <- eval(parse(text=fn_str))
-  
-  fn_str <- fill_fn_template("pages", "pages", "diff_vals")
-  fn_list[["diff_pages"]] <- eval(parse(text=fn_str))
-                              
-  return(fn_list)
-  
-  
-}
 
-
-
-# function that creates a feature function based on the inputs
-fill_fn_template <- function(attr1, attr2, simfunction, tok1 = NULL, tok1param = NULL, tok2 = NULL, tok2param = NULL) {
-  fn_st <- "fn <- function(t1, t2) {"
-  
-  fn_body <- "res <- "
-  
-  if(!is.null(tok1) & !is.null(tok2)) {
-    fn_body <- paste0(fn_body, simfunction, "( ", tok1, "(", "t1$", attr1)
-    if(!is.null(tok1param)) {
-      fn_body <- paste0(fn_body, ", ",  tok1param, "), ");
-    } else {
-      fn_body <- paste0(fn_body, "), ");
-    }
-    
-    fn_body <- paste0(fn_body, tok2, "(", "t2$", attr2)
-    if(!is.null(tok2param)) {
-      fn_body <- paste0(fn_body, ", ",  tok2param, ")) ");
-    } else {
-      fn_body <- paste0(fn_body, ")) ");
-    }
-    
-  } else {
-    fn_body <- paste0(fn_body, simfunction, "( t1$", attr1, ", t2$", attr2, ") \n")
-  }
-  
-  fn_en <- "; return(res)}"
-  
-  fn <- paste0(fn_st, fn_body, fn_en)
-  
-  return(fn)
-}
-
-
-
-
-
-
-
-
-# Using input tables, pply list of feature functions over either 
+# Using input tables, apply list of feature functions over either 
 # (i) labeled data that has label as the last column
 # (ii) candidate set
 
@@ -145,7 +84,7 @@ apply_feat_fn_over_2tables <- function(table_a, table_b, fn_list) {
   
   # convert list of lists to dataframe
   ret_df <- do.call(rbind, ret)
-  ret_df <- convert_types(ret_df, rep("numeric", 4))
+  ret_df <- convert_types(ret_df, rep("numeric", ncol(ret_df)))
   
   return(ret_df)
 }
