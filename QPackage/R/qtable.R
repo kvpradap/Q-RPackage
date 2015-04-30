@@ -32,6 +32,10 @@ setMethod("check_id", representation(object="qtable", key="list"), function(obje
   }
   
   # check unique values in key
+  if(any(is.na(object[key]))) {
+    message("key attribute contains missing values")
+    return(1)
+  }
   uniq_vals <- unique(object[key])
   if( nrow(uniq_vals) != nrow(object) ) {
     return(1)
@@ -60,7 +64,7 @@ setMethod("set_id", representation(object="qtable",  key="list"), function(objec
     message(c('key [', key,  ']does not form a subset of qtable column names [ ', colnames(object)), ' ]')
     return(1)
   }
-
+  
   # check id returns 0 if the id column was unique
   if(check_id(object, list(key)) == 0) {    
     sub_obj <- substitute(object)
