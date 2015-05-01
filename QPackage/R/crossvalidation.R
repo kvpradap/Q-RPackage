@@ -79,7 +79,7 @@ cv_kfold <- function(feat_table, num_folds, model, model_args = list(), predict_
     num_correct <- c(num_correct,  sum(predictions[, 1] == x[folds[[i]], "label"]))
     num_total <- c(num_total, length(folds[[i]]))
   }
-#   print(num_total)
+##   print(num_total)
 #   print(num_correct)
 #   print(sum(num_correct))
 #   print(sum(num_total))
