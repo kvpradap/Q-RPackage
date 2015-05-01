@@ -80,7 +80,7 @@ cv_kfold <- function(feat_table, num_folds, model, model_args = list(), predict_
     num_total <- c(num_total, length(folds[[i]]))
   }
 ##   print(num_total)
-#   print(num_correct)
+##   print(num_correct)
 #   print(sum(num_correct))
 #   print(sum(num_total))
   accuracy <- sum(num_correct)/sum(num_total)
