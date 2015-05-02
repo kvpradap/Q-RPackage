@@ -10,3 +10,8 @@ Depends: R (>= 2.7.0), rJava (>= 0.5-0)
 License: MIT
 Suggests: knitr
 VignetteBuilder: knitr
+Imports: e1071,
+    randomForest,
+    rpart,
+    ipred,
+    ada

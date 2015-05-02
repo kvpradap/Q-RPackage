@@ -298,8 +298,8 @@ The labeled data can be used to generate feature vectors to train machine learni
 In QPackage a set of built-in similarity functions and tokenizers are supported and they can be viewed using the following commands
 
 ```{r}
-show_builtin_simfuns()
-show_builtin_tokenizers()
+show_simfuns()
+show_tokenizers()
 ```
 
 As a first step, given two input tables and their attribute correspondence, features are generated automatically using a set of heuristics based on attribute type and its properties, such as average number of words for character type. 
@@ -346,8 +346,22 @@ labeled_feat_vec[1, ]
 ```
 ### Model selection
 
-Given labeled data and feature vectors, the user would like to choose a learning model for matching. He can choose a model by comparing accuracies from crossvalidation (CV).
-For instance, the user decides to compare 3 learning models : (1) Decision tree, (2) Random forest, and (3) SVM. 
+Given labeled data and feature vectors, the user would like to choose a learning model for matching. He can choose a model by comparing accuracies from crossvalidation (CV). 
+Currently QPackage supports 7 learning models. Each model is identified by a name. The models supported and the associated names are given below:
+1. Decision trees ("rpart")
+2. Random forest ("randomforest")
+3. SVM ("svm")
+4. Neural networks ("nnet")
+5. Naive Bayes ("naivebayes")
+6. Bagging ("bagging")
+7. Boosting ("boosting")
+
+The supported models can be displayed using the following command
+```{r}
+show_learners()
+```
+
+For instance, the user decides to compare 3 learning models : (1) Decision trees, (2) Random forest, and (3) SVM. 
 
 The accuracy can be computed using 10 fold CV as follows
 ```{r}
@@ -357,25 +371,27 @@ The accuracy can be computed using 10 fold CV as follows
 
 # Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 # is already executed in the curret R - session
-# install.packages("rpart")  ## required to install rpart
-library(rpart)
-acc_dt <- cv_kfold(labeled_feat_vec, 10, rpart, predict_args = list(type = "class"))
+
+# install.packages("rpart")  ## required to install rpart, if the package was not installed from GitHub
+
+# library(rpart) # check if this is required !!!
+acc_dt <- cv_kfold(labeled_feat_vec, 10, method = "rpart")
 
 acc_dt
 
 # Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 # is already executed in the curret R - session
-#install.packages("randomForest") ## required to install randomFores
+#install.packages("randomForest") ## required to install randomForest if the package was not installed from GitHub
 library(randomForest) 
-acc_rf <- cv_kfold(labeled_feat_vec, 10, randomForest)
+acc_rf <- cv_kfold(labeled_feat_vec, 10, method = "randomforest")
 
 acc_rf
 
 # Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 # is already executed in the curret R - session
-# install.packages("e1071") ## required to install e1071
+# install.packages("e1071") ## required to install e1071, if the package was not installed from GitHub
 library(e1071)
-acc_svm <- cv_kfold(labeled_feat_vec, 10, svm)
+acc_svm <- cv_kfold(labeled_feat_vec, 10,  method = "svm")
 
 acc_svm
 
@@ -383,10 +399,10 @@ acc_svm
 
 ### Train model
 
-Based on the accuracies, the user can select one of the models to train the whole labeled set. For instance, if the user chooses ```randomForest``` model then he can issue the following command to train it using whole labeled set
+Based on the accuracies, the user can select one of the models to train the whole labeled set. For instance, if the user chooses ```randomforest``` model then he can issue the following command to train it using whole labeled set
 
 ```{r}
-model <- train_model(labeled_feat_vec, randomForest)
+model <- train_model(labeled_feat_vec, method = "randomforest")
 
 print(model)
 ```

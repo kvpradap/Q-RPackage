@@ -2,7 +2,7 @@
 
 # -- walmart
 #read_files <- function() {
-if(0) {
+if(FALSE) {
   print("Importing walmart data")
   walmart <- read_csv("../QPackage/inst//extdata/books/walmart.csv", status = read_status)
   print(read_status)
@@ -40,7 +40,7 @@ if(0) {
 # ---- blocking
 
 #do_block <- function(walmart, bowker, attr1, attr2) {
-if(0) {
+if(FALSE) {
 attr1 <- "isbn"
 attr2 <- "isbn"
 cand_set <-  apply_block(walmart, bowker, attr_equiv_block, attr1, attr2, col_names_a = list("title", "author", "binding", "publisher", "pages"), col_names_b = list("title", "author", "binding", "publisher", "pages"))
@@ -68,17 +68,24 @@ labeled_feat_vec <- convert_to_feature_vecs(walmart, bowker, labeled_data, featu
 # do 10 fold cross validation
 
 library(rpart)
-acc_dt <- cv_kfold(labeled_feat_vec, 10, rpart, predict_args = list(type = "class"))
+
+acc_dt <- cv_kfold(labeled_feat_vec, 10, method = "rpart")
+#acc_dt <- cv_kfold(labeled_feat_vec, 10, rpart, predict_args = list(type = "class"))
 
 library(randomForest)
-acc_rf <- cv_kfold(labeled_feat_vec, 10, randomForest)
+acc_rf <- cv_kfold(labeled_feat_vec, 10, method = "randomforest")
+#acc_rf <- cv_kfold(labeled_feat_vec, 10, randomForest)
 
 library(e1071)
-acc_svm <- cv_kfold(labeled_feat_vec, 10, svm)
+acc_svm <- cv_kfold(labeled_feat_vec, 10 , method = "svm")
+#acc_svm <- cv_kfold(labeled_feat_vec, 10, svm)
+
+
+
 
 
 # The user chooses randomForest to train on whole labeled data
-model <- train_model(labeled_feat_vec, randomForest)
+model <- train_model(labeled_feat_vec, method = "randomforest")
 
 # Use the trained model to predict labels for candidate set
 candset_feat_vec <- convert_to_feature_vecs(walmart, bowker, cand_set, feature_list)

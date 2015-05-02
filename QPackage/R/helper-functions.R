@@ -73,10 +73,17 @@ merge.with.order <- function(x,y, ..., sort = T, keep_order = 1)
 }
 
 # display sim functions
-show_builtin_simfuns <- function() {
+show_simfuns <- function() {
   QPackage:::gbl_sim_fns...
 }
 
-show_builtin_tokenizers <- function() {
+show_tokenizers <- function() {
   QPackage:::gbl_toks...
+}
+show_blockers <- function() {
+  QPackage:::gbl_blockers...
+}
+
+show_learners <- function() {
+  QPackage:::gbl_learners...
 }
