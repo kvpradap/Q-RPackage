@@ -19,6 +19,26 @@
 #   
 # }
 
+#' Train model
+#' 
+#' Train supervised learning model using features from labeled data.
+#' 
+#' @param feat_table Feature vectors represented as qtable,  computed from labeled data. 
+#' @param method Learning model to be applied represented as string. Currently 
+#'   seven learning models are supported  (see \code{\link{show_learners}}). The
+#'   method should be one of the following: "svm", "rpart", "randomforest",
+#'   "nnet", "bagging", "boosting", "naivebayes".
+#' 
+#' @param ... Optional parameters relevant to learning model.
+#'   
+#' @return Returns trained model.
+#'   
+#' @examples
+#' 
+#' \dontrun{
+#'  dt_model <- train_model(labeled_feat_vec, method = "rpart")
+#' }
+#' 
 train_model <- function(feat_table, method = NULL, ...) {
   
     if(!is_labeled_table(feat_table)) {

@@ -28,7 +28,7 @@ read_csv <- function(..., key = NULL, status = NULL) {
     ret_status <- 0
   } else {
     # -- case 2 : key column has list of column names
-    if (check_id(q, key) == TRUE) {
+    if (check_id(q, key) == 1) {
       set_id(q, key)
       ret_status <- 0
     } else {

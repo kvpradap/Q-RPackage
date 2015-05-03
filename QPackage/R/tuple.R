@@ -1,3 +1,11 @@
+#' Tuple constructor
+#' Tuple contructor that can take in a R named list and return Tuple object
+#' 
+#' @examples
+#' 
+#' \dontrun{
+#' t <- tuple("title"="This is title",  "brand" = "Product brand")
+#' }
 tuple <- function(...) {
  ll <- list(...)
  len <- length(ll)
@@ -24,7 +32,7 @@ tuple <- function(...) {
  return(ll)
  #new ("tuple", list(...))
 }
-
+s
 print.tuple <- function(t) {
   data.frame(t)
 }

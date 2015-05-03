@@ -164,6 +164,9 @@ t <- tuple("title" = "This is a title", "brand" = "Product brand")
 # print the class
 print(class(t))
 
+# print t
+print(t)
+
 # print contents of t
 # title
 print(t$title)
@@ -210,7 +213,12 @@ exit_status <- set_id(bowker, list("id"))
 print(exit_status) # 0 success, 1 error
 print(bowker@key)
 ```
+**Note**: To get help on any command in QPackage, just type ```?command_name``` in R command prompt. For example, 
+help on ```set_id``` command can be got using the following command
 
+```
+?set_id
+```
 #### Pre-loaded datasets
 
 For convenience, QPackage is preloaded with bowker and walmart book datasets. The preloaded datasets can be attached to R session using the following command

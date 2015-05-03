@@ -15,7 +15,7 @@ qtable object.}
 \item{method}{Learning model to be applied represented as string. Currently
   seven learning models are supported  (see \code{\link{show_learners}}). The
   method should be one of the following: "svm", "rpart", "randomforest",
-  "nnet", "bagging", "boosting", "naivebayes" .}
+  "nnet", "bagging", "boosting", "naivebayes".}
 
 \item{...}{Optional parameters relevant to learning model.}
 }

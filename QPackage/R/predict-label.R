@@ -24,7 +24,26 @@
 #   return(out)
 # }
 
-
+#' Predict labels
+#' 
+#' Predict labels typically for tuple pairs in candidate set using model learned
+#' from labeled data.
+#' 
+#' @param feat_table Feature vectors represented as qtable,  computed from 
+#'   labeled data.
+#' @param model ML model learned from labeled data.
+#'   
+#' @return Returns a qtable, the feature vector from input table is appended 
+#'   with "predicted_labels" column that contains the predictions from learned 
+#'   model. The "predicted_labels" contains either 0 to indicate non-match or 1
+#'   to indicate match.
+#'  
+#' @examples
+#' 
+#' \dontrun{
+#'  dt_model <- train_model(labeled_feat_vec, method = "rpart")
+#'  labeled_candset <- predict_label(labeled_feat_vec, dt_model)
+#' }
 predict_label <- function(feat_table, model) {
   
   if(!is_qtable(feat_table)) {
