@@ -32,7 +32,7 @@ tuple <- function(...) {
  return(ll)
  #new ("tuple", list(...))
 }
-s
+
 print.tuple <- function(t) {
   data.frame(t)
 }
