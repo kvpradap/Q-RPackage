@@ -217,7 +217,7 @@ print(bowker@key)
 help on ```set_id``` command can be got using the following command
 
 ```
-?set_id
+?set_id # output is suppressed
 ```
 #### Pre-loaded datasets
 
