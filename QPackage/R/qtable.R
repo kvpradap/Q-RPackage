@@ -1,3 +1,8 @@
+#' An S4 class to represent qtable
+#' 
+#' @slot key A list of attributes in qtable that uniquely identifies a row. 
+#' The key values are unique and do not contain missing values.
+#' 
 qtable <- function(...) {
   q <- new ("qtable", data.frame(...))
   # attr(q, "key") <- NULL
@@ -5,12 +10,44 @@ qtable <- function(...) {
 
 setClassUnion("list.or.NULL", c("list", "NULL"))
 
+
 setClass(
   "qtable", slots=c(key="list.or.NULL"),
   contains = "data.frame"
 )
 
+#' Check Id attribute
+#' 
+#' Checks whether a list of attributes contain unique values and does not have 
+#' any missing values.
+#' 
+#' @param object qtable object.
+#' @param key List of column (attribute) names from qtable object
+#' @return A numeric value (0/1) indicating whether the list of attribute names can be
+#'   set as key.
+#'   
+#' @examples
+#' 
+#'  \dontrun{
+#'  status <- check_id(qtable_obj, list("id"))
+#'  } 
 setGeneric("check_id", function(object, key) standardGeneric("check_id"))
+
+
+#' Set Id attribute
+#' 
+#' Sets a list of attributes as key to a qtable object.
+#' 
+#' @param object qtable object.
+#' @param key List of column (attribute) names from qtable object
+#' @return Returns a numeric status (0/1) indicating whether the function
+#'   executed successfully.
+#'   
+#' @examples 
+#' 
+#' \dontrun{
+#' status <- set_id(qtable_obj, list("id"))
+#' }
 
 setGeneric("set_id", function(object, key) standardGeneric("set_id"))
 

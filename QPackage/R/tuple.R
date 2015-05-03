@@ -25,5 +25,11 @@ tuple <- function(...) {
  #new ("tuple", list(...))
 }
 
+print.tuple <- function(t) {
+  data.frame(t)
+}
+
+#' An S4 class to represent a tuple.
+#' 
 setClass("tuple", contains = "list")
 

@@ -1,16 +1,19 @@
+="======"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FDESCRIPTION="C0F95E33"
+~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2FQClasses.R="542F73BE"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fapply-block.R="69A90F75"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fapply-feature-fns.R="43E8E613"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fattr-equiv-blocking.R="E62BFBD8"
-<<<<<<< HEAD
+~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fclean-data.R="836F3D64"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fcrossvalidation.R="8C393B79"
-=======
-~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fcrossvalidation.R="4F89B97E"
->>>>>>> devel
+~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fexport-data.R="24EA018D"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Ffeature-generation.R="991B2341"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fgg.R="ADB8F7B5"
+~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fimport-data.R="A38CDFBC"
+~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fqtable.R="B3B43CB1"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fsimilarity-functions.R="CFCD0293"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Ftest.R="DAB66B79"
+~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Ftuple.R="465239D9"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2FR%2Fworkflow.R="899D215"
 ~%2FDocuments%2FResearch%2FR-Package%2FQ-RPackage%2FQPackage%2Fvignettes%2Fqpkg-vignette.Rmd="2D95344A"
 ~%2FDocuments%2FResearch%2FR-Packages%2FQ-RPackage%2FQPackage%2FR%2FQClasses.R="3E3F7347"
