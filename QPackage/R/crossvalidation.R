@@ -89,19 +89,23 @@ createFolds <- function (y, k = 10, list = TRUE, returnTrain = FALSE)
 #   
 # }
 
-#' K-fold cross validation 
+#' K-fold cross validation
 #' 
-#' \code{cv_kfold} computes k-fold crossvalidation given
-#' feature vector(got from labeled data) and learning model.
+#' \code{cv_kfold} computes k-fold crossvalidation given feature vector(got from
+#' labeled data) and learning model.
 #' 
-#' @param feat_table Feature vector (got from labeled data) represented as
+#' @param feat_table Feature vector (got from labeled data) represented as 
 #'   qtable object.
 #' @param num_folds Number of folds.
-#' @param method Learning model to be applied represented as string. Currently
-#'   seven learning models are supported (see \code{\link{show_learners}}).
+#' @param method Learning model to be applied represented as string. Currently 
+#'   seven learning models are supported  (see \code{\link{show_learners}}). The
+#'   method should be one of the following: "svm", "rpart", "randomforest",
+#'   "nnet", "bagging", "boosting", "naivebayes" .
+#'   
+#'   
 #' @param ... Optional parameters relevant to learning model.
-#'
-#' @return Returns average accuracy computed from k-fold corssvalidation.   
+#'   
+#' @return Returns average accuracy computed from k-fold corssvalidation.
 #'   
 #' @examples
 #' 
