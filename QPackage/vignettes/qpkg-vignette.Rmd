@@ -115,6 +115,22 @@ To install the package, execute the following command
 # install rJava package
 install.packages("rJava") # output is suppressed
 
+# install rpart package
+install.packages("rpart") # output is suppressed
+
+# install randomForest package
+install.packages("randomForest") # output is suppressed
+
+# install ipred package
+install.packages("ipred") # output is suppressed
+
+# install ipred package
+install.packages("nnet") # output is suppressed
+
+# install ipred package
+install.packages("ada") # output is suppressed
+
+
 install.packages("/scratch/pradap/downloads/QPackage_1.0.tar.gz", 
           repos = NULL, source = TRUE) # output is suppressed
 
@@ -382,7 +398,7 @@ The accuracy can be computed using 10 fold CV as follows
 
 # install.packages("rpart")  ## required to install rpart, if the package was not installed from GitHub
 
-# library(rpart) # check if this is required !!!
+# library(rpart) ## required if the package was not installed from github
 acc_dt <- cv_kfold(labeled_feat_vec, 10, method = "rpart")
 
 acc_dt
@@ -390,7 +406,9 @@ acc_dt
 # Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 # is already executed in the curret R - session
 #install.packages("randomForest") ## required to install randomForest if the package was not installed from GitHub
-library(randomForest) 
+
+#library(randomForest) ## required if the package was not installed from github 
+
 acc_rf <- cv_kfold(labeled_feat_vec, 10, method = "randomforest")
 
 acc_rf
@@ -398,7 +416,8 @@ acc_rf
 # Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 # is already executed in the curret R - session
 # install.packages("e1071") ## required to install e1071, if the package was not installed from GitHub
-library(e1071)
+#library(e1071) ## required if the package was not installed from github
+
 acc_svm <- cv_kfold(labeled_feat_vec, 10,  method = "svm")
 
 acc_svm
