@@ -53,9 +53,38 @@ fill_fn_template <- function(attr1, attr2, simfunction, tok1 = NULL, tok1param =
   return(fn)
 }
 
+#' Create features
+#' 
+#' Automatically create features based on input qtable's attribute type and its 
+#' statistics.
+#' 
+#' @param table_a,table_b Input qtable objects.
+#' @param attr_corres List of character vectors capturing the attribute 
+#'   correspondence between table_a and table_b. If set to NULL, attribute 
+#'   correspondence is done based on attribute names.
+#' @param allowed_simlist List of strings containing the similarity function 
+#'   names (a subset of global similarity function list) to be considered for 
+#'   automatic feature creation. If set to NULL, global similarity function list
+#'   (see \code{\link{show_simfns}}) is considered.
+#' @param allowed_toklist List of strings containing the tokenizer names (a 
+#'   subset of global tokenizer list) to be considered for automatic feature 
+#'   creation. If set to NULL, global tokenizer list (see 
+#'   \code{\link{show_tokenizers}}) is considered.
+#'   
+#' @return Returns a list of features represented as R functions that takes in
+#'   two tuples and return a numeric value.
+#'   
+#' @examples
+#' 
+#' \dontrun{
+#' feature_list <- create_features(walmart, bowker, 
+#'                  attr_corres = list(c("title", "title),c("binding", "binding")),
+#'                  allowed_sim_list = list("jaccard", "lev"),
+#'                  allowed_tok_list = list("tok_qgram")
+#'                  )
+#' }
 
 
-# attr_corres is a list of vectors
 create_features <- function(table_a, table_b, attr_corres = NULL, allowed_simlist = NULL, allowed_toklist = NULL) {
   if(is.null(attr_corres)) {
     c1 <- colnames(table_a)

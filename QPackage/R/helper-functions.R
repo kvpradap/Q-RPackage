@@ -72,18 +72,54 @@ merge.with.order <- function(x,y, ..., sort = T, keep_order = 1)
   } else {return(merge(x=x,y=y,..., sort = sort))}
 }
 
-# display sim functions
+#' Show similarity functions
+#' 
+#' Display global list of similarity functions.
+#' 
+#' @examples
+#' 
+#' \dontrun{
+#'  show_simfuns()
+#' }
 show_simfuns <- function() {
   QPackage:::gbl_sim_fns...
 }
 
+#' Show tokenizers
+#' 
+#' Display global list of tokenizers
+#'
+#' @examples 
+#' 
+#' \dontrun{
+#'  show_tokenizers()
+#' }
 show_tokenizers <- function() {
   QPackage:::gbl_toks...
 }
+
+#' Show blockers
+#' 
+#' Display global list of blockers
+#'
+#' @examples 
+#' 
+#' \dontrun{
+#'  show_blockers()
+#' }
 show_blockers <- function() {
   QPackage:::gbl_blockers...
 }
 
+#' Show learners
+#' 
+#' Display global list of learners
+#'
+#' @examples 
+#' 
+#' \dontrun{
+#'  show_learners()
+#' }
 show_learners <- function() {
   QPackage:::gbl_learners...
 }

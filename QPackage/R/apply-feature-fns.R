@@ -3,6 +3,27 @@
 # (i) labeled data that has label as the last column
 # (ii) candidate set
 
+#' Convert to feature vectors
+#' 
+#' Given base tables, labeled data (or candidate set) and feature list (R
+#' function). \code{convert_to_feature_vec} computes the features by joining
+#' candidate set to base tables and applying features represented as R
+#' functions.
+#' 
+#' @param table_a,table_b Base tables represented as qtable objects.
+#' @param cand_set Labeled data (or candidate set) represented as qtable.
+#' @param fn_list List of features represented as R functions.
+#'   
+#' @return Returns a qtable with feature values.
+#'   
+#' @examples
+#' 
+#' \dontrun{
+#'  labeled_feat_vec <- convert_to_feature_vecs(walmart, bowker,
+#'                        labeled_data,
+#'                        feat_list
+#'                      )
+#' }
 convert_to_feature_vecs <- function(table_a, table_b, cand_set, fn_list) {
   
   # basic checks

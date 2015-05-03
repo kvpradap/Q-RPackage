@@ -8,7 +8,7 @@
 #' 
 #' @examples 
 #' 
-#' \donotrun{
+#' \dontrun{
 #' write_csv(qtable_obj, file = "qtable.csv")
 #' }
 write_csv <- function(table_obj, ...) {
