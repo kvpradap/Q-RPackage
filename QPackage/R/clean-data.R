@@ -1,3 +1,16 @@
+#' Fix a qtable
+#' 
+#' \code{fix} internal invokes \code{\link{edit}} on qtable object and
+#' stores back the updated version of qtable object.
+#' 
+#' @param x qtable object
+#' @param ... Relevant paramaters to \code{\link{edit}} function.
+#' 
+#' @examples 
+#' 
+#' \donotrun{
+#' fix(qtable_obj)
+#' }
 fix <- function(x,...) {
   if (isS4(x) == TRUE) {
     if(class(x)[[1]] == "qtable") {
