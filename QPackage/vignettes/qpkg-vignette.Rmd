@@ -130,6 +130,9 @@ install.packages("nnet") # output is suppressed
 # install ipred package
 install.packages("ada") # output is suppressed
 
+# install nnet package
+install.packages("nnet") # output is suppressed
+
 
 install.packages("/scratch/pradap/downloads/QPackage_1.0.tar.gz", 
           repos = NULL, source = TRUE) # output is suppressed

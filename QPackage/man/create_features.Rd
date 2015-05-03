@@ -17,7 +17,7 @@ correspondence is done based on attribute names.}
 \item{allowed_simlist}{List of strings containing the similarity function
 names (a subset of global similarity function list) to be considered for
 automatic feature creation. If set to NULL, global similarity function list
-(see \code{\link{show_simfns}}) is considered.}
+(see \code{\link{show_simfuns}}) is considered.}
 
 \item{allowed_toklist}{List of strings containing the tokenizer names (a
   subset of global tokenizer list) to be considered for automatic feature
