@@ -1,3 +1,4 @@
+# Set-based similarity functions
 jaccard <- function(s1, s2) {
   
   # if one them is NA return NA
@@ -92,6 +93,238 @@ cosine <- function(s1, s2) {
   
 }
 
+dice <- function(s1, s2) {
+  # if one them is NA return NA
+  if(length(s1) > 0) {
+    if(any(is.na(s1))) {
+      return(NA)
+    }
+  }
+  
+  if(length(s2) > 0) {
+    if(any(is.na(s2))) {
+      return(NA)
+    }
+  }
+  
+  # if one of them is null return 0
+  if(is.null(s1) | is.null(s2)) {
+    return(0) 
+  }
+  
+  
+  if(is.list(s1)) {
+    s1 <- unlist(s1)
+  }
+  if(is.list(s2)) {
+    s2 <- unlist(s2)
+  }
+  
+  
+  # trick to match array type required at java side
+  if(length(s1)) {
+    s1 <- rep(s1, 2)
+  }
+  
+  # trick to match array type required at java side
+  if(length(s2)) {
+    s2 <- rep(s2, 2)
+  }
+  
+  # call java code
+  sim_obj <- .jnew("build/SimilarityFunction")
+  sim_val <- .jcall(sim_obj,"D", "dice", s1, s2)
+  
+  return(sim_val)
+}
+
+# Chapman ordered name compounded similarity
+
+chap_cpd <- function(s1, s2) {
+  # if one them is NA return NA
+  if(length(s1) > 0) {
+    if(any(is.na(s1))) {
+      return(NA)
+    }
+  }
+  
+  if(length(s2) > 0) {
+    if(any(is.na(s2))) {
+      return(NA)
+    }
+  }
+  
+  # if one of them is null return 0
+  if(is.null(s1) | is.null(s2)) {
+    return(0) 
+  }
+  
+  
+  if(is.list(s1)) {
+    s1 <- unlist(s1)
+  }
+  if(is.list(s2)) {
+    s2 <- unlist(s2)
+  }
+  
+  
+  # trick to match array type required at java side
+  if(length(s1)) {
+    s1 <- rep(s1, 2)
+  }
+  
+  # trick to match array type required at java side
+  if(length(s2)) {
+    s2 <- rep(s2, 2)
+  }
+  
+  # call java code
+  sim_obj <- .jnew("build/SimilarityFunction")
+  sim_val <- .jcall(sim_obj,"D", "chapmanOrderedNameCompoundedSimilarity", s1, s2)
+  
+  return(sim_val)
+}
+
+block_dist <- function(s1, s2) {
+  # if one them is NA return NA
+  if(length(s1) > 0) {
+    if(any(is.na(s1))) {
+      return(NA)
+    }
+  }
+  
+  if(length(s2) > 0) {
+    if(any(is.na(s2))) {
+      return(NA)
+    }
+  }
+  
+  # if one of them is null return 0
+  if(is.null(s1) | is.null(s2)) {
+    return(0) 
+  }
+  
+  
+  if(is.list(s1)) {
+    s1 <- unlist(s1)
+  }
+  if(is.list(s2)) {
+    s2 <- unlist(s2)
+  }
+  
+  
+  # trick to match array type required at java side
+  if(length(s1)) {
+    s1 <- rep(s1, 2)
+  }
+  
+  # trick to match array type required at java side
+  if(length(s2)) {
+    s2 <- rep(s2, 2)
+  }
+  
+  # call java code
+  sim_obj <- .jnew("build/SimilarityFunction")
+  sim_val <- .jcall(sim_obj,"D", "blockDistance", s1, s2)
+  
+  return(sim_val)
+}
+
+
+match_coeff <- function(s1, s2) {
+  # if one them is NA return NA
+  if(length(s1) > 0) {
+    if(any(is.na(s1))) {
+      return(NA)
+    }
+  }
+  
+  if(length(s2) > 0) {
+    if(any(is.na(s2))) {
+      return(NA)
+    }
+  }
+  
+  # if one of them is null return 0
+  if(is.null(s1) | is.null(s2)) {
+    return(0) 
+  }
+  
+  
+  if(is.list(s1)) {
+    s1 <- unlist(s1)
+  }
+  if(is.list(s2)) {
+    s2 <- unlist(s2)
+  }
+  
+  
+  # trick to match array type required at java side
+  if(length(s1)) {
+    s1 <- rep(s1, 2)
+  }
+  
+  # trick to match array type required at java side
+  if(length(s2)) {
+    s2 <- rep(s2, 2)
+  }
+  
+  # call java code
+  sim_obj <- .jnew("build/SimilarityFunction")
+  sim_val <- .jcall(sim_obj,"D", "matchingCoefficient", s1, s2)
+  
+  return(sim_val)
+}
+
+overlap_coeff <- function(s1, s2) {
+  # if one them is NA return NA
+  if(length(s1) > 0) {
+    if(any(is.na(s1))) {
+      return(NA)
+    }
+  }
+  
+  if(length(s2) > 0) {
+    if(any(is.na(s2))) {
+      return(NA)
+    }
+  }
+  
+  # if one of them is null return 0
+  if(is.null(s1) | is.null(s2)) {
+    return(0) 
+  }
+  
+  
+  if(is.list(s1)) {
+    s1 <- unlist(s1)
+  }
+  if(is.list(s2)) {
+    s2 <- unlist(s2)
+  }
+  
+  
+  # trick to match array type required at java side
+  if(length(s1)) {
+    s1 <- rep(s1, 2)
+  }
+  
+  # trick to match array type required at java side
+  if(length(s2)) {
+    s2 <- rep(s2, 2)
+  }
+  
+  # call java code
+  sim_obj <- .jnew("build/SimilarityFunction")
+  sim_val <- .jcall(sim_obj,"D", "overlapCoefficient", s1, s2)
+  
+  return(sim_val)
+}
+
+
+
+
+# - Single string similarity functions
 
 lev <- function(s1, s2) {
   
@@ -363,8 +596,76 @@ smith_waterman_gotoh <- function(s1, s2) {
   
 }
 
+# Chapman length deviation
+
+chap_lndev <- function(s1, s2) {
+  
+  if(length(s1) > 0) {
+    if(any(is.na(s1))) {
+      return(NA)
+    }
+  }
+  
+  if(length(s2) > 0) {
+    if(any(is.na(s2))) {
+      return(NA)
+    }
+  }
+  
+  if(is.null(s1) | is.null(s2)) {
+    return(0) 
+  }
+  
+  if(!is.character(s1)) {
+    s1 <- as.character(s1)
+  }
+  if(!is.character(s2)) {
+    s2 <- as.character(s2)
+  }
+  
+  
+  # call java code
+  sim_obj <- .jnew("build/SimilarityFunction")
+  sim_val <- .jcall(sim_obj,"D", "chapmanLengthDeviation", s1, s2)
+  
+  return(sim_val)
+  
+}
 
 
+chap_mnlen <- function(s1, s2) {
+  
+  if(length(s1) > 0) {
+    if(any(is.na(s1))) {
+      return(NA)
+    }
+  }
+  
+  if(length(s2) > 0) {
+    if(any(is.na(s2))) {
+      return(NA)
+    }
+  }
+  
+  if(is.null(s1) | is.null(s2)) {
+    return(0) 
+  }
+  
+  if(!is.character(s1)) {
+    s1 <- as.character(s1)
+  }
+  if(!is.character(s2)) {
+    s2 <- as.character(s2)
+  }
+  
+  
+  # call java code
+  sim_obj <- .jnew("build/SimilarityFunction")
+  sim_val <- .jcall(sim_obj,"D", "chapmanMeanLength", s1, s2)
+  
+  return(sim_val)
+  
+}
 
 
 
