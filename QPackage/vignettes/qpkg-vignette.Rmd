@@ -44,23 +44,55 @@ QPackage is implemented in R. We assume that R is already installed in the syste
 
 ### Environment setup
 
-To install QPackage we need to set two environment variables: (1) JAVA_HOME, and (2) CLASS_PATH. 
-JAVA_HOME must be set to the path where JDK is installed. If JDK is not installed, it can be installed from [java site](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
-CLASS_PATH must include current directory (```.```) in its path.
+QPackage requires Java Development Kit (JDK) >= 1.6 and setting up two environment variables: (1) JAVA_HOME, and (2) CLASS_PATH. 
 
-For example, in unix systems JAVA_HOME and CLASS_PATH can be set from command prompt as follows
+Follow the steps below to verify JDK installation and to setup the environment variables.
+
+Step 1. Check whether javac is installed using the following command in shell prompt.
+
+```
+bash$ javac -version
+
+```
+If javac is installed, the above command should give version of java installed and directly proceed to Step 4. 
+
+**Note:** In CSL machines, JDK is preinstalled at /usr/lib/jvm/java-1.7.0 and we can directly proceed to Step 4. 
+
+Step 2. Install JDK >= 1.6 from [java site](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+
+Step 3. Include ```bin``` directory from JDK installed directory to ```PATH``` variable as in the following command
+
+```
+bash$ export PATH=/scratch/pradap/local/share/jdk1.7.0_25/bin:$PATH
+```
+
+Step 4. Export ```JAVA_HOME``` to the path where JDK is installed. For example, in UNIX systems ```JAVA_HOME``` can be set from command prompt using the following command.
+
 ```
 bash$ export JAVA_HOME=/scratch/pradap/local/share/jdk1.7.0_25
-bash$ export CLASS_PATH=.:${CLASS_PATH}
+```
+**Note:** In CSL machines, ```JAVA_HOME``` can be set using the following command
 
 ```
-After exporting the variables, execute the following command from command prompt
+bash$ export JAVA_HOME=/usr/lib/jvm/java-1.7.0
+```
+
+Step 5. Include current directory (```.```) to ```CLASS_PATH``` environment variable. For example, in UNIX systems it can be set 
+using the following command.
+
+```
+bash$ export CLASS_PATH=.:$CLASS_PATH
+```
+
+Step 6. After exporting the variables, execute the following command from command prompt
 
 ```
 bash$ R CMD javareconf -e
 ```
 
-**Note:** Installing a R package in CSL machines (using R at ```/usr/bin/R```) require root permissions, which we donot have. We need to install R packages in a custom directory where we have read/write access. For example, let ```/scratch/pradap/r-libs``` be the directory that we decide to use for installing R packages and the directory can be created using the following command. 
+Step 7. If you are using CSL machine then installing a R package in CSL machines (using R at ```/usr/bin/R```) require root permissions, which we donot have. We need to install R packages in a custom directory where we have read/write access. 
+
+For example, let ```/scratch/pradap/r-libs``` be the directory that we decide to use for installing R packages and the directory can be created using the following command. 
 
 ```
 bash$ mkdir /scratch/pradap/r-libs
@@ -70,48 +102,76 @@ bash$ mkdir /scratch/pradap/r-libs
 
 ### Installing from GitHub
 
-Installing package from GitHub has two steps: (1) Installing ```devtools``` package, and (2) Use ```install_github``` command to install QPackage from GitHub
+Installing package from GitHub has two steps: (1) Installing ```devtools``` package, and (2) Use ```install_github``` command to install QPackage from GitHub.
 
-```devtools``` package can be installed using the following command in R
+Follow the steps below to install QPackage from GitHub
 
+Step 1. Open R.
+
+Step 2. If you are using a CSL machine, execute the following command to first set the custom install directory to R's search path.
 
 ```
 # set the custom directory to R's search path
+
 .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 
+```
+
+**Note**: The above command is effective only for the current R-session, so if you close R and re-open the above command has to be re-execurted to include the custom directory to R's search path.
+
+Step 3. Install ```devtools``` package using the following command
+
+```
 # install devtools package
+
 install.packages("devtools") # output is suppressed
 
 ```
-Once the installation goes through, execute the following command to use the package
+Once the installation goes through move onto Step 4
+
+Step 4. Attach ```devtools``` package to current R session using the following command.
 
 ```
+# Attach devtools package
 library("devtools") # output is suppressed
 
 ```
-Now the QPackage can be installed using the following command
+Step 5. Install ```QPackage``` from GitHub using the following command
 
 ```
 install_github("kvpradap/Q-RPackage/QPackage") # output is suppressed
 
 ```
-Once the installation goes through, execute the following command to use the package
-```{r}
-library("QPackage") 
 
+Step 6. Attach ```QPackage``` to current R-session
+
+```{r}
+# Attach QPackage
+library("QPackage") 
 ```
+
 ### Installing from Tarball
 
-Installing package from Tar ball has two steps: (1) Downloading the tarball, and (2) Use tarball to install the package
+Installing package from Tar ball has two steps: (1) Downloading the tarball, and (2) Use tarball to install the package. 
 
-The latest version of QPackage (as tarball) can be downloaded from  [here](http://pages.cs.wisc.edu/~pradap/qpackage/QPackage_1.0.tar.gz). Lets say that the package is downloaded at ```/scratch/pradap/downloads/QPackage_1.0.tar.gz```. 
+Follow the steps below to install QPackage using tarball.
 
-To install the package, execute the following command
+Step 1. Open R
+
+Step 2. Download the latest version of QPackage tarball from [here](http://pages.cs.wisc.edu/~pradap/qpackage/QPackage_1.0.tar.gz). For illustration, lets say that the package is downloaded at ```/scratch/pradap/downloads/QPackage_1.0.tar.gz```. 
+
+Step 3. If you are using a CSL machine, execute the following command to first set the custom install directory to R's search path.
 
 ```
 # set the custom directory to R's search path
+
 .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 
+```
+Step 4. Install dependency packages for QPackage using the following list of commands
+
+
+```
 # install rJava package
 install.packages("rJava") # output is suppressed
 
@@ -134,14 +194,20 @@ install.packages("ada") # output is suppressed
 install.packages("nnet") # output is suppressed
 
 
+```
+Step 5. Install QPackage from tarball using the following command
+
+```
 install.packages("/scratch/pradap/downloads/QPackage_1.0.tar.gz", 
           repos = NULL, source = TRUE) # output is suppressed
-
 ```
 
-Once the installation goes through, execute the following command to use the package
+
+Step 6. Attach QPackage using the following command
 
 ```
+# Attach QPackage to current R-session.
+
 library("QPackage") # output is suppressed
 
 ```
@@ -320,16 +386,25 @@ Once the user finishes labelling, he can just close the browser (there is no exp
 
 ### Generating feature vectors
 
-The labeled data can be used to generate feature vectors to train machine learning models. A feature is a similarity measure between a pair of attributes.
+The labeled data can be used to generate feature vectors to train machine learning models. A Feature is a function that takes in two tuples and returns a numeric value. Generating feature vectors has two steps: (1) Creating features, and (2) Applying features to get feature vectors.
 
-In QPackage a set of built-in similarity functions and tokenizers are supported and they can be viewed using the following commands
+#### Creating features
+
+In QPackage, a set of built-in similarity functions and tokenizers are supported that can be used to create create features. The list of built-in similarity functions and tokenizers can be viewed using the following command.
 
 ```{r}
 show_simfuns()
 show_tokenizers()
 ```
 
-As a first step, given two input tables and their attribute correspondence, features are generated automatically using a set of heuristics based on attribute type and its properties, such as average number of words for character type. 
+As a first step, QPackage supports automatic generation of features based on two given input tables and their attribute correspondence.
+
+_Attribute correspondence_:
+
+It captures the mapping of attributes (column names) from one table to the other table. This can be seen as the user providing the schema mapping between two input tables. 
+Currently, it is assumed that there is one-one mapping of attributes from one table to the other. It is represented as a list of vectors (of size 2, containing attribute name from first table and its corresponding attribute name from the second table) and it given as argument to the function that generates features. If the user does not provide attribute correspondence, the mapping is done based on exact match of attribute names (column names).
+
+Now, Given two input tables and their attribute correspondence,  features are generated automatically using a set of heuristics based on attribute type and its properties, such as average number of words for character type. 
 For instance, the user can generate features using ```title```, ```numAuthors``` and ```binding``` attributes from bowker and walmart table
 
 
@@ -358,6 +433,9 @@ test_list <- create_features(walmart, bowker,
 length(test_list)
 print(test_list)
 ```
+
+#### Applying features
+
 Using the features, feature vector can be generated using the following command
 ```{r}
 # ignore this command -- done only for illustration
@@ -375,15 +453,22 @@ labeled_feat_vec[1, ]
 
 Given labeled data and feature vectors, the user would like to choose a learning model for matching. He can choose a model by comparing accuracies from crossvalidation (CV). 
 Currently QPackage supports 7 learning models. Each model is identified by a name. The models supported and the associated names are given below:
+
 1. Decision trees ("rpart")
+
 2. Random forest ("randomforest")
+
 3. SVM ("svm")
+
 4. Neural networks ("nnet")
+
 5. Naive Bayes ("naivebayes")
+
 6. Bagging ("bagging")
+
 7. Boosting ("boosting")
 
-The supported models can be displayed using the following command
+The supported models in QPackage can be displayed using the following command
 ```{r}
 show_learners()
 ```
@@ -399,16 +484,14 @@ The accuracy can be computed using 10 fold CV as follows
 # Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 # is already executed in the curret R - session
 
-# install.packages("rpart")  ## required to install rpart, if the package was not installed from GitHub
-
 # library(rpart) ## required if the package was not installed from github
+
 acc_dt <- cv_kfold(labeled_feat_vec, 10, method = "rpart")
 
 acc_dt
 
 # Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 # is already executed in the curret R - session
-#install.packages("randomForest") ## required to install randomForest if the package was not installed from GitHub
 
 #library(randomForest) ## required if the package was not installed from github 
 
@@ -418,7 +501,7 @@ acc_rf
 
 # Assumption: .libPaths(c("/scratch/pradap/r-libs/", .libPaths())) 
 # is already executed in the curret R - session
-# install.packages("e1071") ## required to install e1071, if the package was not installed from GitHub
+
 #library(e1071) ## required if the package was not installed from github
 
 acc_svm <- cv_kfold(labeled_feat_vec, 10,  method = "svm")
@@ -429,7 +512,7 @@ acc_svm
 
 ### Train model
 
-Based on the accuracies, the user can select one of the models to train the whole labeled set. For instance, if the user chooses ```randomforest``` model then he can issue the following command to train it using whole labeled set
+Based on the accuracies, the user can select one of the models to train the whole labeled set. For instance, if the user chooses ```randomforest``` model then he can issue the following command to train it using feature vectors from whole labeled set.
 
 ```{r}
 model <- train_model(labeled_feat_vec, method = "randomforest")
